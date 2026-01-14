@@ -1,19 +1,21 @@
 "use client"
 
-import { useState, useMemo, Suspense } from "react"
+import { useState, useMemo, Suspense, useEffect } from "react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { PlaceCard } from "@/components/explore/place-card"
 import { CategoryFilter } from "@/components/explore/category-filter"
 import { PlaceDetailDialog } from "@/components/explore/place-detail-dialog"
+import { GeneratePlacesButton } from "@/components/explore/generate-places-button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
-import { MapPin, Search, Info } from "lucide-react"
+import { MapPin, Search, Sparkles } from "lucide-react"
 import { useCity } from "@/lib/city-context"
-import placesData from "@/lib/data/places.json"
+import { generateCityPlaces } from "@/lib/actions/generate-places"
+import kolkataPlacesData from "@/lib/data/places.json"
 import type { Place, PlaceCategory } from "@/lib/types"
 
-const places: Place[] = placesData.places as Place[]
+const kolkataPlaces: Place[] = kolkataPlacesData.places as Place[]
 
 function ExploreContent() {
   const { selectedCity } = useCity()
@@ -22,10 +24,18 @@ function ExploreContent() {
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null)
   const [dialogOpen, setDialogOpen] = useState(false)
 
+  const [generatedPlaces, setGeneratedPlaces] = useState<Record<string, Place[]>>({})
+  const [isGenerating, setIsGenerating] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
   const isKolkata = selectedCity.id === "kolkata"
 
+  const currentPlaces = isKolkata ? kolkataPlaces : generatedPlaces[selectedCity.id] || []
+
+  const hasPlaces = currentPlaces.length > 0
+
   const filteredPlaces = useMemo(() => {
-    return places.filter((place) => {
+    return currentPlaces.filter((place) => {
       const matchesCategory = selectedCategory === "all" || place.category === selectedCategory
       const matchesSearch =
         searchQuery === "" ||
@@ -33,12 +43,40 @@ function ExploreContent() {
         place.description.toLowerCase().includes(searchQuery.toLowerCase())
       return matchesCategory && matchesSearch
     })
-  }, [selectedCategory, searchQuery])
+  }, [currentPlaces, selectedCategory, searchQuery])
 
   const handleViewDetails = (place: Place) => {
     setSelectedPlace(place)
     setDialogOpen(true)
   }
+
+  const handleGeneratePlaces = async () => {
+    setIsGenerating(true)
+    setError(null)
+
+    try {
+      const result = await generateCityPlaces(selectedCity.id)
+
+      if (result.error) {
+        setError(result.error)
+      } else {
+        setGeneratedPlaces((prev) => ({
+          ...prev,
+          [selectedCity.id]: result.places,
+        }))
+      }
+    } catch (err) {
+      setError("Failed to generate places. Please try again.")
+    } finally {
+      setIsGenerating(false)
+    }
+  }
+
+  useEffect(() => {
+    setSelectedCategory("all")
+    setSearchQuery("")
+    setError(null)
+  }, [selectedCity.id])
 
   return (
     <>
@@ -53,24 +91,53 @@ function ExploreContent() {
         <p className="text-muted-foreground">{selectedCity.tagline} - Discover iconic landmarks and hidden gems</p>
       </div>
 
-      {!isKolkata && (
-        <Card className="mb-8 border-blue-500/50 bg-blue-500/5">
-          <CardContent className="flex items-start gap-3 pt-6">
-            <Info className="h-5 w-5 text-blue-500 mt-0.5" />
-            <div>
-              <p className="font-medium text-blue-600 dark:text-blue-400">{selectedCity.name} Places Coming Soon</p>
-              <p className="text-sm text-muted-foreground mt-1">
-                We're adding tourist attractions for {selectedCity.name}. Switch to Kolkata to explore our full database
-                of places!
+      {!isKolkata && !hasPlaces && (
+        <Card className="mb-8 border-primary/50 bg-primary/5">
+          <CardContent className="flex flex-col items-center justify-center gap-4 py-8">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+              <Sparkles className="h-8 w-8 text-primary" />
+            </div>
+            <div className="text-center">
+              <p className="font-semibold text-lg">Discover {selectedCity.name} with AI</p>
+              <p className="text-sm text-muted-foreground mt-1 max-w-md">
+                Generate a curated list of famous tourist attractions, landmarks, and hidden gems in {selectedCity.name}{" "}
+                using AI.
               </p>
             </div>
+            <GeneratePlacesButton
+              cityName={selectedCity.name}
+              onGenerate={handleGeneratePlaces}
+              isGenerating={isGenerating}
+            />
+            {error && <p className="text-sm text-destructive mt-2">{error}</p>}
           </CardContent>
         </Card>
       )}
 
-      {isKolkata && (
+      {!isKolkata && hasPlaces && (
+        <Card className="mb-6 border-primary/30 bg-primary/5">
+          <CardContent className="flex items-center gap-3 py-4">
+            <Sparkles className="h-5 w-5 text-primary" />
+            <div className="flex-1">
+              <p className="text-sm">
+                <span className="font-medium">AI-Generated:</span>{" "}
+                <span className="text-muted-foreground">
+                  {currentPlaces.length} places discovered for {selectedCity.name}
+                </span>
+              </p>
+            </div>
+            <GeneratePlacesButton
+              cityName={selectedCity.name}
+              onGenerate={handleGeneratePlaces}
+              isGenerating={isGenerating}
+            />
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Search and Filter - show when we have places */}
+      {hasPlaces && (
         <>
-          {/* Search and Filter */}
           <div className="mb-8 space-y-4">
             <div className="relative max-w-md">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -84,7 +151,6 @@ function ExploreContent() {
             <CategoryFilter selected={selectedCategory} onSelect={setSelectedCategory} />
           </div>
 
-          {/* Results */}
           <div className="mb-4 flex items-center justify-between">
             <p className="text-sm text-muted-foreground">
               Showing {filteredPlaces.length} {filteredPlaces.length === 1 ? "place" : "places"}
@@ -93,7 +159,8 @@ function ExploreContent() {
         </>
       )}
 
-      {isKolkata ? (
+      {/* Places Grid */}
+      {hasPlaces ? (
         filteredPlaces.length === 0 ? (
           <div className="flex h-64 items-center justify-center rounded-lg border border-dashed border-border">
             <div className="text-center">
@@ -108,15 +175,14 @@ function ExploreContent() {
             ))}
           </div>
         )
-      ) : (
-        <Card className="flex h-64 items-center justify-center">
+      ) : isKolkata ? (
+        <div className="flex h-64 items-center justify-center rounded-lg border border-dashed border-border">
           <div className="text-center">
             <MapPin className="mx-auto h-12 w-12 text-muted-foreground/50" />
-            <p className="mt-4 font-medium">Explore {selectedCity.name}</p>
-            <p className="text-sm text-muted-foreground mt-1">Tourist attractions data coming soon</p>
+            <p className="mt-4 text-muted-foreground">Loading places...</p>
           </div>
-        </Card>
-      )}
+        </div>
+      ) : null}
 
       <PlaceDetailDialog place={selectedPlace} open={dialogOpen} onOpenChange={setDialogOpen} />
     </>

@@ -32,6 +32,11 @@ export function Footer() {
             </Link>
           </div>
         </div>
+        <div className="mt-6 pt-4 border-t border-border/50 text-center">
+          <p className="text-sm text-muted-foreground">
+            Made by <span className="font-medium text-foreground">Rachit</span>
+          </p>
+        </div>
       </div>
     </footer>
   )
