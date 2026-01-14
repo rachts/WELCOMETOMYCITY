@@ -1,0 +1,28 @@
+{
+  "stations": [
+    { "id": "dum-dum", "name": "Dum Dum", "lat": 22.6228, "lng": 88.4328, "lines": ["blue"] },
+    { "id": "belgachia", "name": "Belgachia", "lat": 22.6108, "lng": 88.3892, "lines": ["blue"] },
+    { "id": "shyambazar", "name": "Shyambazar", "lat": 22.5983, "lng": 88.3748, "lines": ["blue"] },
+    { "id": "sovabazar-sutanuti", "name": "Sovabazar Sutanuti", "lat": 22.5883, "lng": 88.3648, "lines": ["blue"] },
+    { "id": "girish-park", "name": "Girish Park", "lat": 22.5783, "lng": 88.3598, "lines": ["blue"] },
+    { "id": "mahatma-gandhi-road", "name": "Mahatma Gandhi Road", "lat": 22.5683, "lng": 88.3548, "lines": ["blue"] },
+    { "id": "central", "name": "Central", "lat": 22.5583, "lng": 88.3498, "lines": ["blue"] },
+    { "id": "chandni-chowk", "name": "Chandni Chowk", "lat": 22.5533, "lng": 88.3448, "lines": ["blue"] },
+    { "id": "esplanade", "name": "Esplanade", "lat": 22.5483, "lng": 88.3523, "lines": ["blue", "green"] },
+    { "id": "park-street", "name": "Park Street", "lat": 22.5433, "lng": 88.3573, "lines": ["blue"] },
+    { "id": "maidan", "name": "Maidan", "lat": 22.5383, "lng": 88.3473, "lines": ["blue"] },
+    { "id": "rabindra-sadan", "name": "Rabindra Sadan", "lat": 22.5283, "lng": 88.3423, "lines": ["blue"] },
+    { "id": "netaji-bhavan", "name": "Netaji Bhavan", "lat": 22.5183, "lng": 88.3373, "lines": ["blue"] },
+    { "id": "jatin-das-park", "name": "Jatin Das Park", "lat": 22.5083, "lng": 88.3323, "lines": ["blue"] },
+    { "id": "kalighat", "name": "Kalighat", "lat": 22.5233, "lng": 88.3423, "lines": ["blue"] },
+    { "id": "rabindra-sarobar", "name": "Rabindra Sarobar", "lat": 22.5133, "lng": 88.3623, "lines": ["blue"] },
+    { "id": "masterda-surya-sen", "name": "Masterda Surya Sen", "lat": 22.4883, "lng": 88.3673, "lines": ["blue"] },
+    { "id": "kavi-subhash", "name": "Kavi Subhash", "lat": 22.4733, "lng": 88.3723, "lines": ["blue"] },
+    { "id": "howrah-maidan", "name": "Howrah Maidan", "lat": 22.5856, "lng": 88.342, "lines": ["green"] },
+    { "id": "howrah", "name": "Howrah", "lat": 22.5856, "lng": 88.342, "lines": ["green"] },
+    { "id": "mahakaran", "name": "Mahakaran", "lat": 22.57, "lng": 88.35, "lines": ["green"] },
+    { "id": "sealdah", "name": "Sealdah", "lat": 22.57, "lng": 88.37, "lines": ["green"] },
+    { "id": "phoolbagan", "name": "Phoolbagan", "lat": 22.575, "lng": 88.385, "lines": ["green"] },
+    { "id": "salt-lake-sector-v", "name": "Salt Lake Sector V", "lat": 22.5733, "lng": 88.4333, "lines": ["green"] }
+  ]
+}

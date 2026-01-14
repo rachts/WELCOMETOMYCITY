@@ -1,0 +1,148 @@
+{
+  "places": [
+    {
+      "id": "victoria-memorial",
+      "name": "Victoria Memorial",
+      "category": "historical",
+      "lat": 22.5448,
+      "lng": 88.3426,
+      "description": "A magnificent white marble building dedicated to Queen Victoria, now serving as a museum housing a vast collection of British-era artifacts.",
+      "bestTime": "Morning (9 AM - 11 AM) or Evening (4 PM - 6 PM)",
+      "entryFee": "₹30 for Indians, ₹500 for foreigners",
+      "nearbyStation": "Rabindra Sadan",
+      "image": "/placeholder.svg?height=300&width=400"
+    },
+    {
+      "id": "howrah-bridge",
+      "name": "Howrah Bridge",
+      "category": "historical",
+      "lat": 22.5851,
+      "lng": 88.3468,
+      "description": "An iconic cantilever bridge over the Hooghly River, one of the busiest bridges in the world carrying over 100,000 vehicles daily.",
+      "bestTime": "Early morning for photos or evening for sunset views",
+      "entryFee": "Free",
+      "nearbyStation": "Howrah",
+      "image": "/placeholder.svg?height=300&width=400"
+    },
+    {
+      "id": "indian-museum",
+      "name": "Indian Museum",
+      "category": "cultural",
+      "lat": 22.5581,
+      "lng": 88.35,
+      "description": "The largest and oldest museum in India, featuring rare antiques, armor, ornaments, fossils, and Mughal paintings.",
+      "bestTime": "10 AM - 5 PM (Closed on Mondays)",
+      "entryFee": "₹20 for Indians, ₹500 for foreigners",
+      "nearbyStation": "Park Street",
+      "image": "/placeholder.svg?height=300&width=400"
+    },
+    {
+      "id": "kalighat-temple",
+      "name": "Kalighat Kali Temple",
+      "category": "religious",
+      "lat": 22.5197,
+      "lng": 88.3436,
+      "description": "One of the 51 Shakti Peethas, this ancient Hindu temple is dedicated to Goddess Kali and attracts millions of devotees.",
+      "bestTime": "5 AM - 2 PM, 5 PM - 10:30 PM",
+      "entryFee": "Free",
+      "nearbyStation": "Kalighat",
+      "image": "/placeholder.svg?height=300&width=400"
+    },
+    {
+      "id": "dakshineswar-temple",
+      "name": "Dakshineswar Kali Temple",
+      "category": "religious",
+      "lat": 22.6546,
+      "lng": 88.3576,
+      "description": "A famous Hindu temple dedicated to Bhavatarini, closely associated with Ramakrishna Paramahansa who served as its priest.",
+      "bestTime": "6 AM - 12:30 PM, 3 PM - 8:30 PM",
+      "entryFee": "Free",
+      "nearbyStation": "Dum Dum",
+      "image": "/placeholder.svg?height=300&width=400"
+    },
+    {
+      "id": "new-market",
+      "name": "New Market (Hogg Market)",
+      "category": "food-markets",
+      "lat": 22.5638,
+      "lng": 88.3542,
+      "description": "Kolkata's most famous shopping destination since 1874, offering everything from clothes to electronics to street food.",
+      "bestTime": "11 AM - 8 PM (Closed on Sundays)",
+      "entryFee": "Free",
+      "nearbyStation": "Esplanade",
+      "image": "/placeholder.svg?height=300&width=400"
+    },
+    {
+      "id": "park-street",
+      "name": "Park Street",
+      "category": "food-markets",
+      "lat": 22.5512,
+      "lng": 88.3589,
+      "description": "Known as the 'food street of Kolkata', famous for its restaurants, pubs, and colonial-era buildings.",
+      "bestTime": "Evening (6 PM - 11 PM)",
+      "entryFee": "Free",
+      "nearbyStation": "Park Street",
+      "image": "/placeholder.svg?height=300&width=400"
+    },
+    {
+      "id": "eco-park",
+      "name": "Eco Tourism Park",
+      "category": "nature",
+      "lat": 22.6051,
+      "lng": 88.466,
+      "description": "India's largest urban park spanning 480 acres with eco-cottages, musical fountain, and replicas of Seven Wonders.",
+      "bestTime": "2:30 PM - 8:30 PM (Weekdays), 12 PM - 8:30 PM (Weekends)",
+      "entryFee": "₹30 for adults, ₹10 for children",
+      "nearbyStation": "Salt Lake Sector V",
+      "image": "/placeholder.svg?height=300&width=400"
+    },
+    {
+      "id": "botanical-garden",
+      "name": "Acharya Jagadish Chandra Bose Botanical Garden",
+      "category": "nature",
+      "lat": 22.5565,
+      "lng": 88.3098,
+      "description": "Home to the famous Great Banyan Tree, one of the widest trees in the world, spread over 250 years old.",
+      "bestTime": "10 AM - 5 PM (Closed on Wednesdays)",
+      "entryFee": "₹10 for Indians",
+      "nearbyStation": "Howrah",
+      "image": "/placeholder.svg?height=300&width=400"
+    },
+    {
+      "id": "science-city",
+      "name": "Science City",
+      "category": "cultural",
+      "lat": 22.5395,
+      "lng": 88.3965,
+      "description": "The largest science museum in the Indian subcontinent with interactive exhibits, space theater, and evolution park.",
+      "bestTime": "9 AM - 8 PM",
+      "entryFee": "₹50-200 depending on attractions",
+      "nearbyStation": "Salt Lake Sector V",
+      "image": "/placeholder.svg?height=300&width=400"
+    },
+    {
+      "id": "marble-palace",
+      "name": "Marble Palace",
+      "category": "historical",
+      "lat": 22.5828,
+      "lng": 88.3617,
+      "description": "A 19th-century palatial mansion known for its marble architecture and collection of paintings by Rubens and Reynolds.",
+      "bestTime": "10 AM - 4 PM (Closed Mon & Thu)",
+      "entryFee": "Free (Permit required)",
+      "nearbyStation": "Girish Park",
+      "image": "/placeholder.svg?height=300&width=400"
+    },
+    {
+      "id": "college-street",
+      "name": "College Street Book Market",
+      "category": "cultural",
+      "lat": 22.5772,
+      "lng": 88.3631,
+      "description": "The largest secondhand book market in the world, home to Coffee House and Presidency University.",
+      "bestTime": "10 AM - 8 PM",
+      "entryFee": "Free",
+      "nearbyStation": "Mahatma Gandhi Road",
+      "image": "/placeholder.svg?height=300&width=400"
+    }
+  ]
+}
