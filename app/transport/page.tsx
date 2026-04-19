@@ -109,9 +109,9 @@ function TransportContent() {
                       />
                     </div>
 
-                    <div className="flex justify-center">
-                      <Button variant="ghost" size="icon" onClick={handleSwap} disabled={!fromStation && !toStation}>
-                        <ArrowRightLeft className="h-4 w-4" />
+                    <div className="flex justify-center my-2">
+                      <Button variant="ghost" size="icon" onClick={handleSwap} disabled={!fromStation && !toStation} className="h-12 w-12 rounded-full bg-muted/50 hover:bg-muted">
+                        <ArrowRightLeft className="h-5 w-5" />
                       </Button>
                     </div>
 
@@ -125,8 +125,8 @@ function TransportContent() {
                       />
                     </div>
 
-                    <Button className="w-full gap-2" onClick={handleSearch} disabled={!fromStation || !toStation}>
-                      <Search className="h-4 w-4" />
+                    <Button className="w-full gap-2 min-h-[52px] rounded-xl text-base shadow-sm" onClick={handleSearch} disabled={!fromStation || !toStation}>
+                      <Search className="h-5 w-5" />
                       Find Routes
                     </Button>
                   </CardContent>

@@ -9,6 +9,16 @@ import { Card, CardContent } from "@/components/ui/card"
 import { useCity } from "@/lib/city-context"
 import { Train, MapPin, Calendar, ArrowRight, Clock, Wallet, Route, Building2 } from "lucide-react"
 import Link from "next/link"
+import { motion } from "framer-motion"
+
+const fadeIn = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+}
+const stagger = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+}
 
 function HomeContent() {
   const { selectedCity, cities } = useCity()
@@ -21,37 +31,44 @@ function HomeContent() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative overflow-hidden bg-gradient-to-b from-primary/5 via-background to-background pb-16 pt-20">
-          <div className="container mx-auto px-4">
-            <div className="mx-auto max-w-3xl text-center">
-              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-muted/50 px-4 py-1.5 text-sm">
-                <Building2 className="h-4 w-4 text-primary" />
-                <span className="text-muted-foreground">{cities.length} Metro Cities Covered</span>
-              </div>
-              <h1 className="text-balance text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-                <span className="text-primary">WELCOME</span>TO
+        <section className="relative overflow-hidden bg-gradient-to-b from-primary/10 via-background to-background pb-20 pt-28 md:pt-36">
+          <div className="container mx-auto px-4 relative z-10">
+            <motion.div 
+               initial="hidden" 
+               animate="visible" 
+               variants={stagger} 
+               className="mx-auto max-w-3xl text-center"
+            >
+              <motion.div variants={fadeIn} className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm font-medium text-primary shadow-sm backdrop-blur-sm">
+                <Building2 className="h-4 w-4" />
+                <span>{cities.length} Metro Cities Covered</span>
+              </motion.div>
+              <motion.h1 variants={fadeIn} className="text-balance text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl drop-shadow-sm">
+                <span className="text-primary italic">WELCOME</span>TO
                 <br />
-                <span className="text-accent">{selectedCity.name.toUpperCase()}</span>
-              </h1>
-              <p className="mx-auto mt-4 text-lg text-muted-foreground">{selectedCity.tagline}</p>
-              <p className="mx-auto mt-2 max-w-2xl text-pretty text-muted-foreground">{selectedCity.description}</p>
-              <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-                <Button asChild size="lg" className="gap-2">
+                <span className="bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
+                  {selectedCity.name.toUpperCase()}
+                </span>
+              </motion.h1>
+              <motion.p variants={fadeIn} className="mx-auto mt-6 text-xl text-muted-foreground/90 font-medium">{selectedCity.tagline}</motion.p>
+              <motion.p variants={fadeIn} className="mx-auto mt-3 max-w-2xl text-pretty text-muted-foreground">{selectedCity.description}</motion.p>
+              <motion.div variants={fadeIn} className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Button asChild size="lg" className="w-full sm:w-auto gap-2 min-h-[52px] px-8 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.2)] transition-shadow text-base">
                   <Link href="/transport">
                     Plan Route
-                    <ArrowRight className="h-4 w-4" />
+                    <ArrowRight className="h-5 w-5" />
                   </Link>
                 </Button>
-                <Button asChild variant="outline" size="lg">
+                <Button asChild variant="outline" size="lg" className="w-full sm:w-auto min-h-[52px] px-8 rounded-full bg-background/50 backdrop-blur-sm border-border/80 hover:bg-muted/50 text-base">
                   <Link href="/explore">Explore {selectedCity.name}</Link>
                 </Button>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
 
           {/* Decorative elements */}
-          <div className="absolute -left-20 top-1/2 h-64 w-64 rounded-full bg-primary/10 blur-3xl" />
-          <div className="absolute -right-20 top-1/3 h-64 w-64 rounded-full bg-accent/10 blur-3xl" />
+          <div className="absolute -left-20 top-1/4 h-80 w-80 rounded-full bg-primary/20 blur-[120px] pointer-events-none" />
+          <div className="absolute -right-20 top-1/3 h-80 w-80 rounded-full bg-accent/20 blur-[100px] pointer-events-none" />
         </section>
 
         {/* Features */}

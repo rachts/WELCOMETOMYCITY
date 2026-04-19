@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/theme-provider"
 import { CityProvider } from "@/lib/city-context"
+import { BottomNav } from "@/components/bottom-nav"
 import "./globals.css"
 
 const _geist = Geist({ subsets: ["latin"] })
@@ -35,6 +36,10 @@ export const viewport: Viewport = {
     { media: "(prefers-color-scheme: light)", color: "#ffffff" },
     { media: "(prefers-color-scheme: dark)", color: "#0f1419" },
   ],
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  viewportFit: "cover",
 }
 
 export default function RootLayout({
@@ -44,9 +49,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="font-sans antialiased">
+      <body className="font-sans antialiased pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <CityProvider>{children}</CityProvider>
+          <CityProvider>
+            {children}
+            <BottomNav />
+          </CityProvider>
         </ThemeProvider>
         <Analytics />
       </body>
