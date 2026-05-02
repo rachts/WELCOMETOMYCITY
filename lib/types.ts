@@ -6,6 +6,18 @@ export interface Station {
   lines: string[]
 }
 
+export type Emotion = 
+  | "romantic" 
+  | "peaceful" 
+  | "adventurous" 
+  | "cultural" 
+  | "luxury" 
+  | "chaotic" 
+  | "spiritual" 
+  | "social"
+
+export type ExperienceMode = "romantic" | "hidden-gems" | "cultural-deep-dive" | "food-crawl"
+
 export interface Place {
   id: string
   name: string
@@ -13,6 +25,9 @@ export interface Place {
   lat: number
   lng: number
   description: string
+  story: string
+  emotionScores: Partial<Record<Emotion, number>>
+  hiddenGemScore: number
   bestTime: string
   entryFee: string
   nearbyStation: string
@@ -44,6 +59,8 @@ export interface RouteStep {
 
 export interface ItineraryDay {
   day: number
+  theme: string
+  narrative: string
   places: Place[]
   totalDistance: number
   totalDuration: number

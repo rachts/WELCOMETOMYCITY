@@ -1,22 +1,11 @@
-import placesData from "@/lib/data/places.json"
-import type { Place, ItineraryDay } from "@/lib/types"
+import type { Place, ItineraryDay, ExperienceMode } from "@/lib/types"
 import { calculateDistance } from "@/lib/route-calculator"
-
-const places: Place[] = placesData.places as Place[]
-
-// Organize places by category for balanced itineraries
-const placesByCategory = {
-  historical: places.filter((p) => p.category === "historical"),
-  cultural: places.filter((p) => p.category === "cultural"),
-  religious: places.filter((p) => p.category === "religious"),
-  "food-markets": places.filter((p) => p.category === "food-markets"),
-  nature: places.filter((p) => p.category === "nature"),
-}
+import { getPlacesForMode } from "@/lib/experience-engine"
 
 function optimizeRoute(selectedPlaces: Place[]): Place[] {
   if (selectedPlaces.length <= 1) return selectedPlaces
 
-  // Simple nearest-neighbor optimization
+  // Simple nearest-neighbor optimization starting from the first place
   const optimized: Place[] = [selectedPlaces[0]]
   const remaining = [...selectedPlaces.slice(1)]
 
@@ -53,104 +42,75 @@ function calculateTotalDistance(orderedPlaces: Place[]): number {
   return Math.round(total * 10) / 10
 }
 
-export function generateItinerary(days: 1 | 2 | 3): ItineraryDay[] {
+function generateNarrative(mode: ExperienceMode | "all", places: Place[], day: number): { theme: string; narrative: string } {
+  const names = places.map(p => p.name).join(", ")
+  
+  if (mode === "romantic") {
+    return {
+      theme: `Day ${day}: Love & Serenity`,
+      narrative: `Begin your day with a calm escape, soaking in the peaceful atmosphere. As the afternoon wanes, transition towards scenic views and golden hour magic. Today's journey takes you through ${names}, curated specifically for low crowds and high emotional resonance.`
+    }
+  }
+  if (mode === "hidden-gems") {
+    return {
+      theme: `Day ${day}: Uncovering Secrets`,
+      narrative: `Step away from the tourist traps and dive into the authentic soul of the city. Today is about discovery—walking through less-trodden paths to find true local flavor. You will explore highly-rated but quiet offbeat locations, including ${names}.`
+    }
+  }
+  if (mode === "cultural-deep-dive") {
+    return {
+      theme: `Day ${day}: Echoes of the Past`,
+      narrative: `Immerse yourself in centuries of history, architecture, and art. Today's narrative arc moves from monumental heritage sites to bustling intellectual hubs. Walk the halls of the past as you visit ${names}.`
+    }
+  }
+  if (mode === "food-crawl") {
+    return {
+      theme: `Day ${day}: A Culinary Adventure`,
+      narrative: `Prepare your palate for a journey through the city's chaotic and vibrant food markets. From early morning street stalls to historic dining hubs, you'll experience the intense social energy of ${names}.`
+    }
+  }
+  
+  // Default (all)
+  return {
+    theme: `Day ${day}: City Highlights`,
+    narrative: `A balanced exploration of the city's most iconic spots. Transition seamlessly from historic landmarks to bustling modern hubs as you explore ${names}.`
+  }
+}
+
+export function generateItinerary(
+  places: Place[],
+  days: 1 | 2 | 3, 
+  mode: ExperienceMode | "all"
+): ItineraryDay[] {
+  // 1. Filter places based on mode
+  const filteredPlaces = getPlacesForMode(places, mode)
+  
+  // We need roughly 3-4 places per day
+  const placesPerDay = 3
   const itinerary: ItineraryDay[] = []
 
-  if (days === 1) {
-    // One day: Cover iconic spots
-    const dayPlaces = [
-      placesByCategory.historical[0], // Victoria Memorial
-      placesByCategory.historical[1], // Howrah Bridge
-      placesByCategory["food-markets"][0], // New Market
-      placesByCategory.cultural[0], // Indian Museum
-    ].filter(Boolean)
+  for (let i = 0; i < days; i++) {
+    // Slice the top matching places for this day
+    const startIndex = i * placesPerDay
+    // If we run out of places, just loop back or stop. For now, just slice what we have.
+    const dayPlacesUnoptimized = scoredPlaces.slice(startIndex, startIndex + placesPerDay)
+    
+    if (dayPlacesUnoptimized.length === 0) break
 
-    const optimized = optimizeRoute(dayPlaces)
+    // 2. Distance optimization within the selected emotional cohort
+    const optimizedPlaces = optimizeRoute(dayPlacesUnoptimized)
+    
+    // 3. Generate narrative storytelling
+    const { theme, narrative } = generateNarrative(mode, optimizedPlaces, i + 1)
+
     itinerary.push({
-      day: 1,
-      places: optimized,
-      totalDistance: calculateTotalDistance(optimized),
-      totalDuration: optimized.length * 90, // 90 min avg per place
-    })
-  } else if (days === 2) {
-    // Day 1: Historical & Cultural
-    const day1Places = [
-      placesByCategory.historical[0],
-      placesByCategory.cultural[0],
-      placesByCategory["food-markets"][0],
-      placesByCategory.cultural[1],
-    ].filter(Boolean)
-
-    const optimized1 = optimizeRoute(day1Places)
-    itinerary.push({
-      day: 1,
-      places: optimized1,
-      totalDistance: calculateTotalDistance(optimized1),
-      totalDuration: optimized1.length * 90,
-    })
-
-    // Day 2: Religious & Nature
-    const day2Places = [
-      placesByCategory.religious[0],
-      placesByCategory.religious[1],
-      placesByCategory.nature[0],
-      placesByCategory["food-markets"][1],
-    ].filter(Boolean)
-
-    const optimized2 = optimizeRoute(day2Places)
-    itinerary.push({
-      day: 2,
-      places: optimized2,
-      totalDistance: calculateTotalDistance(optimized2),
-      totalDuration: optimized2.length * 90,
-    })
-  } else {
-    // Day 1: Historical Tour
-    const day1Places = [
-      placesByCategory.historical[0],
-      placesByCategory.historical[1],
-      placesByCategory.historical[2],
-      placesByCategory["food-markets"][0],
-    ].filter(Boolean)
-
-    const optimized1 = optimizeRoute(day1Places)
-    itinerary.push({
-      day: 1,
-      places: optimized1,
-      totalDistance: calculateTotalDistance(optimized1),
-      totalDuration: optimized1.length * 90,
-    })
-
-    // Day 2: Cultural & Religious
-    const day2Places = [
-      placesByCategory.cultural[0],
-      placesByCategory.cultural[1],
-      placesByCategory.religious[0],
-      placesByCategory["food-markets"][1],
-    ].filter(Boolean)
-
-    const optimized2 = optimizeRoute(day2Places)
-    itinerary.push({
-      day: 2,
-      places: optimized2,
-      totalDistance: calculateTotalDistance(optimized2),
-      totalDuration: optimized2.length * 90,
-    })
-
-    // Day 3: Nature & More
-    const day3Places = [
-      placesByCategory.nature[0],
-      placesByCategory.nature[1],
-      placesByCategory.religious[1],
-      placesByCategory.cultural[2],
-    ].filter(Boolean)
-
-    const optimized3 = optimizeRoute(day3Places)
-    itinerary.push({
-      day: 3,
-      places: optimized3,
-      totalDistance: calculateTotalDistance(optimized3),
-      totalDuration: optimized3.length * 90,
+      day: i + 1,
+      theme,
+      narrative,
+      places: optimizedPlaces,
+      totalDistance: calculateTotalDistance(optimizedPlaces),
+      // 90 mins avg per place
+      totalDuration: optimizedPlaces.length * 90, 
     })
   }
 

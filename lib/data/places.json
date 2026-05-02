@@ -7,10 +7,75 @@
       "lat": 22.5448,
       "lng": 88.3426,
       "description": "A magnificent white marble building dedicated to Queen Victoria, now serving as a museum housing a vast collection of British-era artifacts.",
+      "story": "Best visited during golden hour when the pristine white Makrana marble reflects the soft sunset hues, creating a mesmerizing, romantic atmosphere against the Kolkata skyline.",
+      "emotionScores": {
+        "romantic": 0.9,
+        "peaceful": 0.8,
+        "cultural": 0.9,
+        "social": 0.4
+      },
+      "hiddenGemScore": 0.1,
       "bestTime": "Morning (9 AM - 11 AM) or Evening (4 PM - 6 PM)",
       "entryFee": "₹30 for Indians, ₹500 for foreigners",
       "nearbyStation": "Rabindra Sadan",
-      "image": "/placeholder.svg?height=300&width=400"
+      "image": "https://images.unsplash.com/photo-1558431382-27e303142255?q=80&w=1000&auto=format&fit=crop"
+    },
+    {
+      "id": "princep-ghat",
+      "name": "Princep Ghat",
+      "category": "historical",
+      "lat": 22.5562,
+      "lng": 88.3308,
+      "description": "A Greek/Gothic colonnaded monument on the banks of the Hooghly River.",
+      "story": "Rent a small wooden boat at dusk. Watching the sunset paint the river gold while the Vidyasagar Setu lights up above is one of the most romantic experiences in the city.",
+      "emotionScores": {
+        "romantic": 0.95,
+        "peaceful": 0.85,
+        "cultural": 0.6
+      },
+      "hiddenGemScore": 0.3,
+      "bestTime": "Evening (5 PM - 7 PM)",
+      "entryFee": "Free",
+      "nearbyStation": "Esplanade (Bus/Taxi connection)",
+      "image": "https://images.unsplash.com/photo-1621361596756-324d0ab02a11?q=80&w=1000&auto=format&fit=crop"
+    },
+    {
+      "id": "kumartuli",
+      "name": "Kumartuli",
+      "category": "cultural",
+      "lat": 22.6015,
+      "lng": 88.3615,
+      "description": "The traditional potters' quarter in North Kolkata where magnificent clay idols are sculpted.",
+      "story": "Wander through the narrow, mud-slicked alleys to witness raw artistry. It’s an authentic, unpolished glimpse into the soul of Bengal's grandest festivals.",
+      "emotionScores": {
+        "cultural": 0.95,
+        "chaotic": 0.6,
+        "adventurous": 0.7
+      },
+      "hiddenGemScore": 0.8,
+      "bestTime": "Morning (8 AM - 11 AM)",
+      "entryFee": "Free (Photography fees may apply)",
+      "nearbyStation": "Sovabazar Sutanuti",
+      "image": "https://images.unsplash.com/photo-1603507116503-455b8e99e4f1?q=80&w=1000&auto=format&fit=crop"
+    },
+    {
+      "id": "south-park-street-cemetery",
+      "name": "South Park Street Cemetery",
+      "category": "historical",
+      "lat": 22.5457,
+      "lng": 88.3601,
+      "description": "An 18th-century Christian cemetery featuring massive Gothic and Indo-Saracenic tombs covered in moss.",
+      "story": "Step off the bustling Park Street into this quiet, melancholic oasis. The giant, moss-draped obelisks offer a hauntingly beautiful, peaceful escape from the city noise.",
+      "emotionScores": {
+        "peaceful": 0.9,
+        "romantic": 0.6,
+        "cultural": 0.8
+      },
+      "hiddenGemScore": 0.85,
+      "bestTime": "Morning (9 AM - 12 PM)",
+      "entryFee": "₹50",
+      "nearbyStation": "Park Street",
+      "image": "https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?q=80&w=1000&auto=format&fit=crop"
     },
     {
       "id": "howrah-bridge",
@@ -18,35 +83,18 @@
       "category": "historical",
       "lat": 22.5851,
       "lng": 88.3468,
-      "description": "An iconic cantilever bridge over the Hooghly River, one of the busiest bridges in the world carrying over 100,000 vehicles daily.",
-      "bestTime": "Early morning for photos or evening for sunset views",
+      "description": "An iconic cantilever bridge over the Hooghly River, carrying over 100,000 vehicles daily.",
+      "story": "Feel the pulse of Kolkata by walking across the pedestrian walkway. The chaotic symphony of horns, rushing commuters, and river boats below is pure, unadulterated city energy.",
+      "emotionScores": {
+        "chaotic": 0.9,
+        "social": 0.8,
+        "cultural": 0.7
+      },
+      "hiddenGemScore": 0.1,
+      "bestTime": "Early morning or late evening",
       "entryFee": "Free",
       "nearbyStation": "Howrah",
-      "image": "/placeholder.svg?height=300&width=400"
-    },
-    {
-      "id": "indian-museum",
-      "name": "Indian Museum",
-      "category": "cultural",
-      "lat": 22.5581,
-      "lng": 88.35,
-      "description": "The largest and oldest museum in India, featuring rare antiques, armor, ornaments, fossils, and Mughal paintings.",
-      "bestTime": "10 AM - 5 PM (Closed on Mondays)",
-      "entryFee": "₹20 for Indians, ₹500 for foreigners",
-      "nearbyStation": "Park Street",
-      "image": "/placeholder.svg?height=300&width=400"
-    },
-    {
-      "id": "kalighat-temple",
-      "name": "Kalighat Kali Temple",
-      "category": "religious",
-      "lat": 22.5197,
-      "lng": 88.3436,
-      "description": "One of the 51 Shakti Peethas, this ancient Hindu temple is dedicated to Goddess Kali and attracts millions of devotees.",
-      "bestTime": "5 AM - 2 PM, 5 PM - 10:30 PM",
-      "entryFee": "Free",
-      "nearbyStation": "Kalighat",
-      "image": "/placeholder.svg?height=300&width=400"
+      "image": "https://images.unsplash.com/photo-1563223771-331615f33e08?q=80&w=1000&auto=format&fit=crop"
     },
     {
       "id": "dakshineswar-temple",
@@ -54,23 +102,56 @@
       "category": "religious",
       "lat": 22.6546,
       "lng": 88.3576,
-      "description": "A famous Hindu temple dedicated to Bhavatarini, closely associated with Ramakrishna Paramahansa who served as its priest.",
-      "bestTime": "6 AM - 12:30 PM, 3 PM - 8:30 PM",
+      "description": "A famous Hindu temple on the Hooghly riverbank, dedicated to Bhavatarini.",
+      "story": "Sit on the temple ghats as the sun sets over the river. The rhythmic chanting and temple bells create a deeply spiritual and grounding atmosphere.",
+      "emotionScores": {
+        "spiritual": 0.95,
+        "peaceful": 0.7,
+        "cultural": 0.8
+      },
+      "hiddenGemScore": 0.2,
+      "bestTime": "6 AM - 8 AM or 5 PM - 7 PM",
       "entryFee": "Free",
-      "nearbyStation": "Dum Dum",
-      "image": "/placeholder.svg?height=300&width=400"
+      "nearbyStation": "Dakshineswar",
+      "image": "https://images.unsplash.com/photo-1596489389922-b5b63bc587cb?q=80&w=1000&auto=format&fit=crop"
     },
     {
-      "id": "new-market",
-      "name": "New Market (Hogg Market)",
+      "id": "mullik-ghat-flower-market",
+      "name": "Mullik Ghat Flower Market",
       "category": "food-markets",
-      "lat": 22.5638,
-      "lng": 88.3542,
-      "description": "Kolkata's most famous shopping destination since 1874, offering everything from clothes to electronics to street food.",
-      "bestTime": "11 AM - 8 PM (Closed on Sundays)",
+      "lat": 22.5833,
+      "lng": 88.3442,
+      "description": "Asia's largest wholesale flower market, located right beneath the Howrah Bridge.",
+      "story": "A sensory overload of bright orange marigolds and shouting vendors. Arrive at dawn to witness a chaotic, vibrant explosion of color that photographers dream of.",
+      "emotionScores": {
+        "chaotic": 0.95,
+        "cultural": 0.8,
+        "adventurous": 0.7
+      },
+      "hiddenGemScore": 0.6,
+      "bestTime": "5 AM - 8 AM",
       "entryFee": "Free",
-      "nearbyStation": "Esplanade",
-      "image": "/placeholder.svg?height=300&width=400"
+      "nearbyStation": "Howrah",
+      "image": "https://images.unsplash.com/photo-1582293041079-7814c2f12063?q=80&w=1000&auto=format&fit=crop"
+    },
+    {
+      "id": "rabindra-sarobar",
+      "name": "Rabindra Sarobar",
+      "category": "nature",
+      "lat": 22.5121,
+      "lng": 88.3636,
+      "description": "An artificial lake surrounded by lush greenery in South Kolkata.",
+      "story": "The perfect place for a quiet morning walk. The canopy of ancient trees and the still water offer a serene escape for couples and solitary thinkers alike.",
+      "emotionScores": {
+        "peaceful": 0.9,
+        "romantic": 0.8,
+        "nature": 0.9
+      },
+      "hiddenGemScore": 0.4,
+      "bestTime": "5 AM - 9 AM",
+      "entryFee": "Free",
+      "nearbyStation": "Rabindra Sarobar",
+      "image": "https://images.unsplash.com/photo-1542281286-9e0a16bb7366?q=80&w=1000&auto=format&fit=crop"
     },
     {
       "id": "park-street",
@@ -78,47 +159,18 @@
       "category": "food-markets",
       "lat": 22.5512,
       "lng": 88.3589,
-      "description": "Known as the 'food street of Kolkata', famous for its restaurants, pubs, and colonial-era buildings.",
+      "description": "The food and entertainment hub of Kolkata, famous for its colonial-era restaurants and pubs.",
+      "story": "Walk under the canopy of lights during winter evenings. It’s the cosmopolitan heart of the city, perfect for a luxurious dinner or a lively night out.",
+      "emotionScores": {
+        "social": 0.9,
+        "luxury": 0.8,
+        "chaotic": 0.5
+      },
+      "hiddenGemScore": 0.1,
       "bestTime": "Evening (6 PM - 11 PM)",
       "entryFee": "Free",
       "nearbyStation": "Park Street",
-      "image": "/placeholder.svg?height=300&width=400"
-    },
-    {
-      "id": "eco-park",
-      "name": "Eco Tourism Park",
-      "category": "nature",
-      "lat": 22.6051,
-      "lng": 88.466,
-      "description": "India's largest urban park spanning 480 acres with eco-cottages, musical fountain, and replicas of Seven Wonders.",
-      "bestTime": "2:30 PM - 8:30 PM (Weekdays), 12 PM - 8:30 PM (Weekends)",
-      "entryFee": "₹30 for adults, ₹10 for children",
-      "nearbyStation": "Salt Lake Sector V",
-      "image": "/placeholder.svg?height=300&width=400"
-    },
-    {
-      "id": "botanical-garden",
-      "name": "Acharya Jagadish Chandra Bose Botanical Garden",
-      "category": "nature",
-      "lat": 22.5565,
-      "lng": 88.3098,
-      "description": "Home to the famous Great Banyan Tree, one of the widest trees in the world, spread over 250 years old.",
-      "bestTime": "10 AM - 5 PM (Closed on Wednesdays)",
-      "entryFee": "₹10 for Indians",
-      "nearbyStation": "Howrah",
-      "image": "/placeholder.svg?height=300&width=400"
-    },
-    {
-      "id": "science-city",
-      "name": "Science City",
-      "category": "cultural",
-      "lat": 22.5395,
-      "lng": 88.3965,
-      "description": "The largest science museum in the Indian subcontinent with interactive exhibits, space theater, and evolution park.",
-      "bestTime": "9 AM - 8 PM",
-      "entryFee": "₹50-200 depending on attractions",
-      "nearbyStation": "Salt Lake Sector V",
-      "image": "/placeholder.svg?height=300&width=400"
+      "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1000&auto=format&fit=crop"
     },
     {
       "id": "marble-palace",
@@ -126,23 +178,301 @@
       "category": "historical",
       "lat": 22.5828,
       "lng": 88.3617,
-      "description": "A 19th-century palatial mansion known for its marble architecture and collection of paintings by Rubens and Reynolds.",
+      "description": "A 19th-century palatial mansion known for its marble architecture and art collection.",
+      "story": "Hidden behind high walls in a crowded street, this decaying mansion feels frozen in time. Walking its marble halls is like stepping into a forgotten era of immense wealth.",
+      "emotionScores": {
+        "cultural": 0.9,
+        "peaceful": 0.7,
+        "luxury": 0.7
+      },
+      "hiddenGemScore": 0.9,
       "bestTime": "10 AM - 4 PM (Closed Mon & Thu)",
-      "entryFee": "Free (Permit required)",
+      "entryFee": "Free (Prior permit required)",
       "nearbyStation": "Girish Park",
-      "image": "/placeholder.svg?height=300&width=400"
+      "image": "https://images.unsplash.com/photo-1582293041079-7814c2f12063?q=80&w=1000&auto=format&fit=crop"
     },
     {
       "id": "college-street",
-      "name": "College Street Book Market",
+      "name": "College Street",
       "category": "cultural",
       "lat": 22.5772,
       "lng": 88.3631,
-      "description": "The largest secondhand book market in the world, home to Coffee House and Presidency University.",
-      "bestTime": "10 AM - 8 PM",
+      "description": "The largest secondhand book market in the world.",
+      "story": "Lose yourself among endless stacks of old books. Grab an 'infusion' coffee at the iconic Indian Coffee House and soak in the intellectual chatter of the city.",
+      "emotionScores": {
+        "cultural": 0.95,
+        "social": 0.8,
+        "chaotic": 0.6
+      },
+      "hiddenGemScore": 0.3,
+      "bestTime": "11 AM - 6 PM",
       "entryFee": "Free",
       "nearbyStation": "Mahatma Gandhi Road",
-      "image": "/placeholder.svg?height=300&width=400"
+      "image": "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1000&auto=format&fit=crop"
+    },
+    {
+      "id": "eco-park",
+      "name": "Eco Tourism Park",
+      "category": "nature",
+      "lat": 22.6051,
+      "lng": 88.4660,
+      "description": "India's largest urban park spanning 480 acres with water bodies and themed gardens.",
+      "story": "Rent a cycle and explore the vast open spaces. It's a modern, landscaped oasis offering a clean, family-friendly environment away from the city grit.",
+      "emotionScores": {
+        "peaceful": 0.8,
+        "social": 0.8,
+        "romantic": 0.6
+      },
+      "hiddenGemScore": 0.2,
+      "bestTime": "Late afternoon",
+      "entryFee": "₹30",
+      "nearbyStation": "Eco Park (Metro Line 6)",
+      "image": "https://images.unsplash.com/photo-1519331379826-f10be5486c6f?q=80&w=1000&auto=format&fit=crop"
+    },
+    {
+      "id": "st-pauls-cathedral",
+      "name": "St. Paul's Cathedral",
+      "category": "historical",
+      "lat": 22.5442,
+      "lng": 88.3465,
+      "description": "An Anglican cathedral notable for its Gothic architecture and stained glass windows.",
+      "story": "Sit in the wooden pews as the afternoon light filters through the stained glass. The cool, echoing interior forces you to whisper and instantly calms the mind.",
+      "emotionScores": {
+        "peaceful": 0.95,
+        "spiritual": 0.8,
+        "romantic": 0.7
+      },
+      "hiddenGemScore": 0.3,
+      "bestTime": "Morning or Late Afternoon",
+      "entryFee": "Free",
+      "nearbyStation": "Rabindra Sadan",
+      "image": "https://images.unsplash.com/photo-1548625361-ecac313b5a79?q=80&w=1000&auto=format&fit=crop"
+    },
+    {
+      "id": "tiretti-bazaar",
+      "name": "Tiretti Bazaar (Old Chinatown)",
+      "category": "food-markets",
+      "lat": 22.5746,
+      "lng": 88.3516,
+      "description": "An early morning street food market run by Kolkata's Chinese community.",
+      "story": "Wake up before dawn for authentic pork baos, dumplings, and fish ball soup. It’s a fleeting, culturally rich culinary adventure that disappears by 8 AM.",
+      "emotionScores": {
+        "adventurous": 0.9,
+        "cultural": 0.8,
+        "chaotic": 0.6
+      },
+      "hiddenGemScore": 0.8,
+      "bestTime": "5:30 AM - 7:30 AM",
+      "entryFee": "Free",
+      "nearbyStation": "Central",
+      "image": "https://images.unsplash.com/photo-1583394838336-acd977736f90?q=80&w=1000&auto=format&fit=crop"
+    },
+    {
+      "id": "indian-museum",
+      "name": "Indian Museum",
+      "category": "cultural",
+      "lat": 22.5581,
+      "lng": 88.3500,
+      "description": "The largest and oldest museum in India, featuring rare antiques, armor, and fossils.",
+      "story": "Walking through its dusty, high-ceilinged corridors feels like an intellectual treasure hunt. It's an imposing, deeply historical dive into India's past.",
+      "emotionScores": {
+        "cultural": 0.95,
+        "peaceful": 0.6
+      },
+      "hiddenGemScore": 0.2,
+      "bestTime": "10 AM - 2 PM",
+      "entryFee": "₹50",
+      "nearbyStation": "Park Street",
+      "image": "https://images.unsplash.com/photo-1566127444941-8e124fffc59e?q=80&w=1000&auto=format&fit=crop"
+    },
+    {
+      "id": "kalighat-temple",
+      "name": "Kalighat Kali Temple",
+      "category": "religious",
+      "lat": 22.5197,
+      "lng": 88.3436,
+      "description": "One of the 51 Shakti Peethas, dedicated to Goddess Kali.",
+      "story": "Brace yourself for raw, intense devotion. The crowds, the incense, and the visceral energy make this a profound, if somewhat chaotic, spiritual encounter.",
+      "emotionScores": {
+        "spiritual": 0.9,
+        "chaotic": 0.9,
+        "cultural": 0.8
+      },
+      "hiddenGemScore": 0.1,
+      "bestTime": "Early morning",
+      "entryFee": "Free",
+      "nearbyStation": "Kalighat",
+      "image": "https://images.unsplash.com/photo-1596489389922-b5b63bc587cb?q=80&w=1000&auto=format&fit=crop"
+    },
+    {
+      "id": "botanical-garden",
+      "name": "Acharya Jagadish Chandra Bose Botanical Garden",
+      "category": "nature",
+      "lat": 22.5565,
+      "lng": 88.3098,
+      "description": "Home to the famous 250-year-old Great Banyan Tree.",
+      "story": "Walk beneath a single tree that looks like an entire forest. The sheer scale of nature here provides a profound sense of peace and smallness.",
+      "emotionScores": {
+        "peaceful": 0.9,
+        "nature": 0.9,
+        "romantic": 0.7
+      },
+      "hiddenGemScore": 0.5,
+      "bestTime": "Morning",
+      "entryFee": "₹10",
+      "nearbyStation": "Howrah (Bus connection)",
+      "image": "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1000&auto=format&fit=crop"
+    },
+    {
+      "id": "tangra-chinatown",
+      "name": "Tangra (New Chinatown)",
+      "category": "food-markets",
+      "lat": 22.5451,
+      "lng": 88.3976,
+      "description": "Kolkata's newer Chinatown area, famous for Indo-Chinese cuisine.",
+      "story": "Venture here in the evening for spicy, sizzling Hakka Chinese food in rustic tanneries-turned-restaurants. It's a unique cultural hybrid you won't find elsewhere.",
+      "emotionScores": {
+        "social": 0.8,
+        "cultural": 0.7,
+        "adventurous": 0.6
+      },
+      "hiddenGemScore": 0.7,
+      "bestTime": "Evening (7 PM - 10 PM)",
+      "entryFee": "Free",
+      "nearbyStation": "Phoolbagan",
+      "image": "https://images.unsplash.com/photo-1552611052-3ba9d45c6b81?q=80&w=1000&auto=format&fit=crop"
+    },
+    {
+      "id": "mother-house",
+      "name": "Mother House",
+      "category": "religious",
+      "lat": 22.5463,
+      "lng": 88.3618,
+      "description": "The headquarters of the Missionaries of Charity and the tomb of Mother Teresa.",
+      "story": "A place of profound silence and humility. Sitting by the simple tomb in the quiet chapel offers a deeply moving moment of reflection.",
+      "emotionScores": {
+        "spiritual": 0.9,
+        "peaceful": 0.9,
+        "cultural": 0.6
+      },
+      "hiddenGemScore": 0.4,
+      "bestTime": "Morning (8 AM - 12 PM)",
+      "entryFee": "Free",
+      "nearbyStation": "Park Street",
+      "image": "https://images.unsplash.com/photo-1437435166299-c8cba769396e?q=80&w=1000&auto=format&fit=crop"
+    },
+    {
+      "id": "new-market",
+      "name": "New Market (Hogg Market)",
+      "category": "food-markets",
+      "lat": 22.5638,
+      "lng": 88.3542,
+      "description": "Kolkata's most famous shopping destination since 1874.",
+      "story": "Get lost in the labyrinth of red brick corridors. Haggling for everything from silver jewelry to Kalimpong cheese is a thrilling, chaotic social sport.",
+      "emotionScores": {
+        "chaotic": 0.9,
+        "social": 0.8,
+        "adventurous": 0.7
+      },
+      "hiddenGemScore": 0.2,
+      "bestTime": "Afternoon",
+      "entryFee": "Free",
+      "nearbyStation": "Esplanade",
+      "image": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1000&auto=format&fit=crop"
+    },
+    {
+      "id": "jorasanko-thakur-bari",
+      "name": "Jorasanko Thakur Bari",
+      "category": "historical",
+      "lat": 22.5855,
+      "lng": 88.3592,
+      "description": "The ancestral home of Rabindranath Tagore, now a museum.",
+      "story": "Walk the wooden floors where the Nobel laureate composed his masterpieces. The traditional red-brick courtyard echoes with Bengal’s literary renaissance.",
+      "emotionScores": {
+        "cultural": 0.95,
+        "peaceful": 0.7
+      },
+      "hiddenGemScore": 0.6,
+      "bestTime": "Morning",
+      "entryFee": "₹20",
+      "nearbyStation": "Girish Park",
+      "image": "https://images.unsplash.com/photo-1621361596756-324d0ab02a11?q=80&w=1000&auto=format&fit=crop"
+    },
+    {
+      "id": "maidan",
+      "name": "Maidan",
+      "category": "nature",
+      "lat": 22.5513,
+      "lng": 88.3444,
+      "description": "The vast 'lungs of Kolkata', a huge urban park extending from Raj Bhavan to the National Library.",
+      "story": "Join locals for a misty winter morning walk or watch an impromptu cricket match. Riding a horse-drawn carriage around its periphery at sunset feels timeless.",
+      "emotionScores": {
+        "peaceful": 0.8,
+        "social": 0.7,
+        "nature": 0.8
+      },
+      "hiddenGemScore": 0.1,
+      "bestTime": "Early Morning or Late Afternoon",
+      "entryFee": "Free",
+      "nearbyStation": "Maidan",
+      "image": "https://images.unsplash.com/photo-1542281286-9e0a16bb7366?q=80&w=1000&auto=format&fit=crop"
+    },
+    {
+      "id": "belur-math",
+      "name": "Belur Math",
+      "category": "religious",
+      "lat": 22.6322,
+      "lng": 88.3551,
+      "description": "The headquarters of the Ramakrishna Math and Mission, featuring architecture that fuses Hindu, Islamic, and Christian elements.",
+      "story": "Take a ferry across the Hooghly River to reach this sanctuary. Its architectural unity of faiths and sprawling green lawns inspire profound inner peace.",
+      "emotionScores": {
+        "spiritual": 0.95,
+        "peaceful": 0.9,
+        "cultural": 0.8
+      },
+      "hiddenGemScore": 0.4,
+      "bestTime": "Evening Aarti",
+      "entryFee": "Free",
+      "nearbyStation": "Dakshineswar (then ferry)",
+      "image": "https://images.unsplash.com/photo-1596489389922-b5b63bc587cb?q=80&w=1000&auto=format&fit=crop"
+    },
+    {
+      "id": "science-city",
+      "name": "Science City",
+      "category": "cultural",
+      "lat": 22.5395,
+      "lng": 88.3965,
+      "description": "The largest science center in the Indian subcontinent.",
+      "story": "A fun-filled, interactive space. It’s less about quiet reflection and more about energetic discovery and social fun, especially if traveling with family.",
+      "emotionScores": {
+        "social": 0.8,
+        "cultural": 0.7,
+        "adventurous": 0.5
+      },
+      "hiddenGemScore": 0.2,
+      "bestTime": "Late Morning",
+      "entryFee": "₹60+",
+      "nearbyStation": "Salt Lake Sector V (Bus connection)",
+      "image": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=1000&auto=format&fit=crop"
+    },
+    {
+      "id": "nakhoda-masjid",
+      "name": "Nakhoda Masjid",
+      "category": "religious",
+      "lat": 22.5786,
+      "lng": 88.3550,
+      "description": "The principal mosque of Kolkata, inspired by the mausoleum of Mughal Emperor Akbar.",
+      "story": "The sheer scale of its red sandstone facade amidst the bustling Zakaria Street is awe-inspiring. Visit during Ramzan for a spectacular fusion of spirituality and street food.",
+      "emotionScores": {
+        "spiritual": 0.8,
+        "cultural": 0.9,
+        "chaotic": 0.6
+      },
+      "hiddenGemScore": 0.6,
+      "bestTime": "Morning or Evening",
+      "entryFee": "Free",
+      "nearbyStation": "Mahatma Gandhi Road",
+      "image": "https://images.unsplash.com/photo-1583394838336-acd977736f90?q=80&w=1000&auto=format&fit=crop"
     }
   ]
 }

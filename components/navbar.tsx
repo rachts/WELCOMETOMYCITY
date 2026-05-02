@@ -1,65 +1,60 @@
 "use client"
 
+"use client"
+
+import { useEffect, useState } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { ThemeToggle } from "@/components/theme-toggle"
+import Image from "next/image"
 import { CitySwitcher } from "@/components/city-switcher"
-import { Train, MapPin, Calendar, Info, Menu, Home } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { useState } from "react"
+import { Sparkles, Navigation, Layers, UserCircle } from "lucide-react"
+import { createClient } from "@/utils/supabase/client"
+import { NavLinks } from "./nav-links"
+import type { User } from "@supabase/supabase-js"
 
 const navItems = [
-  { href: "/", label: "Home", icon: Home },
-  { href: "/transport", label: "Transport", icon: Train },
-  { href: "/explore", label: "Explore", icon: MapPin },
-  { href: "/plan", label: "Plan Trip", icon: Calendar },
-  { href: "/about", label: "About", icon: Info },
+  { href: "/", label: "OS", icon: Layers },
+  { href: "/explore", label: "Explore", icon: Sparkles },
+  { href: "/plan", label: "Intelligence", icon: Navigation },
 ]
 
 export function Navbar() {
-  const pathname = usePathname()
-  const [open, setOpen] = useState(false)
+  const [user, setUser] = useState<User | null>(null)
+
+  useEffect(() => {
+    const supabase = createClient()
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data.user)
+    })
+    
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user || null)
+    })
+    
+    return () => {
+      authListener.subscription.unsubscribe()
+    }
+  }, [])
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
-            <Train className="h-5 w-5 text-primary-foreground" />
+    <div className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
+      <header className="pointer-events-auto flex items-center gap-2 p-2 rounded-full glass-panel border-white/10 shadow-2xl">
+        
+        <Link href="/" className="flex items-center gap-2 pl-3 pr-2 py-1 group">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 group-hover:neon-glow-cyan transition-all duration-300">
+            <Image src="/logo.png" alt="WelcomeToMyCity Logo" width={32} height={32} className="w-6 h-6 object-contain" />
           </div>
-          <span className="hidden font-semibold sm:inline-block">WELCOMETOMYCITY</span>
+          <span className="font-bold text-sm tracking-widest hidden sm:inline-block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            WTMC
+          </span>
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden items-center gap-1 md:flex">
-          {navItems.map((item) => {
-            const Icon = item.icon
-            const isActive = pathname === item.href
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                  isActive
-                    ? "bg-primary/10 text-primary"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground",
-                )}
-              >
-                <Icon className="h-4 w-4" />
-                {item.label}
-              </Link>
-            )
-          })}
-        </nav>
+        <NavLinks user={user} />
 
-        <div className="flex items-center gap-2">
+        <div className="border-l border-white/10 pl-2">
           <CitySwitcher />
-          <ThemeToggle />
         </div>
-      </div>
-    </header>
+      </header>
+    </div>
   )
 }
