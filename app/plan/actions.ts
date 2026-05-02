@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/utils/supabase/server'
 import type { ItineraryDay } from '@/lib/types'
 
-export async function saveItinerary(city: string, emotion: string, days: number, places: ItineraryDay[]) {
+export async function saveItinerary(name: string, city: string, emotion: string, days: number, places: ItineraryDay[]) {
   const supabase = await createClient()
   
   const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -17,6 +17,7 @@ export async function saveItinerary(city: string, emotion: string, days: number,
     .from('itineraries')
     .insert({ 
       user_id: user.id, 
+      name,
       city, 
       emotion, 
       days,

@@ -111,7 +111,7 @@ export default async function MyTripsPage() {
           </GlassCard>
 
           {/* Recent Places List */}
-          <GlassCard className="md:col-span-2 p-6 overflow-hidden flex flex-col">
+          <GlassCard className="p-6 overflow-hidden flex flex-col">
             <h3 className="font-bold text-lg mb-4 text-white">Recent Places</h3>
             {savedPlaces && savedPlaces.length > 0 ? (
               <div className="flex-1 overflow-auto pr-2 space-y-3">
@@ -119,7 +119,7 @@ export default async function MyTripsPage() {
                   <div key={save.id} className="flex justify-between items-center p-3 rounded-xl bg-white/5 border border-white/5">
                     <div className="flex items-center gap-3">
                       <MapPin className="w-4 h-4 text-primary" />
-                      <span className="font-medium text-white/90 text-sm">{save.place_id}</span>
+                      <span className="font-medium text-white/90 text-sm truncate max-w-[150px]">{save.place_id.replace(/_/g, ' ')}</span>
                     </div>
                     <span className="text-xs text-white/40">
                       {new Date(save.created_at).toLocaleDateString()}
@@ -131,6 +131,34 @@ export default async function MyTripsPage() {
               <div className="flex-1 flex flex-col items-center justify-center text-white/30">
                 <MapPin className="w-8 h-8 mb-2 opacity-50" />
                 <p className="text-sm">No places saved yet.</p>
+              </div>
+            )}
+          </GlassCard>
+
+          {/* Saved Itineraries List */}
+          <GlassCard className="md:col-span-2 p-6 overflow-hidden flex flex-col">
+            <h3 className="font-bold text-lg mb-4 text-white">Saved Itineraries</h3>
+            {itineraries && itineraries.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 flex-1 overflow-auto pr-2">
+                {itineraries.map((itinerary) => (
+                  <div key={itinerary.id} className="flex flex-col p-4 rounded-xl bg-white/5 border border-white/5 hover:border-white/20 transition-all cursor-pointer">
+                    <h4 className="font-bold text-white mb-1 truncate">{itinerary.name || `${itinerary.days} Day Trip`}</h4>
+                    <div className="flex justify-between items-end">
+                      <div className="flex items-center gap-2">
+                        <Navigation className="w-3 h-3 text-secondary" />
+                        <span className="text-xs text-white/50">{itinerary.city} • {itinerary.days} Days</span>
+                      </div>
+                      <span className="text-[10px] text-white/30">
+                        {new Date(itinerary.created_at).toLocaleDateString()}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="flex-1 flex flex-col items-center justify-center text-white/30">
+                <Navigation className="w-8 h-8 mb-2 opacity-50" />
+                <p className="text-sm">No itineraries saved yet.</p>
               </div>
             )}
           </GlassCard>

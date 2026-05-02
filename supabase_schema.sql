@@ -10,6 +10,7 @@ CREATE TABLE public.saved_places (
 CREATE TABLE public.itineraries (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+  name TEXT,
   city TEXT NOT NULL,
   emotion TEXT NOT NULL,
   days INTEGER NOT NULL,

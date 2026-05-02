@@ -31,12 +31,15 @@ const MODES: { id: ExperienceMode | "all", label: string, icon: any }[] = [
   { id: "food-crawl", label: "Food Crawl", icon: Utensils }
 ]
 
+import { Input } from "@/components/ui/input"
+
 export function PlanClient({ initialPlaces }: { initialPlaces: Place[] }) {
   const { selectedCity } = useCity()
   const [selectedDays, setSelectedDays] = useState<1 | 2 | 3 | null>(null)
   const [selectedMode, setSelectedMode] = useState<ExperienceMode | "all">("all")
   const [itinerary, setItinerary] = useState<ItineraryDay[]>([])
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null)
+  const [itineraryName, setItineraryName] = useState("")
 
   const isKolkata = selectedCity.id === "kolkata"
   const basePlaces = isKolkata ? initialPlaces : []
@@ -46,6 +49,10 @@ export function PlanClient({ initialPlaces }: { initialPlaces: Place[] }) {
     const generated = generateItinerary(basePlaces, selectedDays, selectedMode)
     setItinerary(generated)
     setSelectedPlace(null) // Reset selection on new generation
+    
+    // Default name
+    const modeLabel = MODES.find(m => m.id === selectedMode)?.label || "City"
+    setItineraryName(`${modeLabel} Journey in ${selectedCity.name}`)
   }
 
   const themeColor = getModeColor(selectedMode)
@@ -151,9 +158,14 @@ export function PlanClient({ initialPlaces }: { initialPlaces: Place[] }) {
           {itinerary.length > 0 && (
             <GlassCard glowColor={themeColor} className="flex-1 flex flex-col overflow-hidden animate-in slide-in-from-bottom duration-700">
               <div className="p-5 border-b border-white/10 bg-black/40 flex flex-col gap-4">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h2 className="text-xl font-bold mb-1">Your {selectedDays}-Day Journey</h2>
+                <div className="flex flex-col gap-3">
+                  <Input 
+                    value={itineraryName}
+                    onChange={(e) => setItineraryName(e.target.value)}
+                    placeholder="Name your journey..."
+                    className="bg-transparent border-none text-xl font-bold p-0 focus-visible:ring-0 placeholder:text-white/20 h-auto"
+                  />
+                  <div className="flex justify-between items-center">
                     <p className="text-sm text-white/70 flex items-center gap-1.5">
                       {(() => {
                         const ModeIcon = MODES.find(m => m.id === selectedMode)?.icon || MapPin;
@@ -161,23 +173,23 @@ export function PlanClient({ initialPlaces }: { initialPlaces: Place[] }) {
                       })()}
                       {MODES.find(m => m.id === selectedMode)?.label} Vibe
                     </p>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={async () => {
-                        const res = await saveItinerary(selectedCity.name, selectedMode, selectedDays!, itinerary)
-                        if (res.error) alert(res.error)
-                        else alert('Itinerary saved!')
-                      }} 
-                      className="h-8 px-3 text-xs bg-white/5 border-white/10 hover:bg-white/10 text-white"
-                    >
-                      <BookmarkPlus className="w-3.5 h-3.5 mr-1" /> Save
-                    </Button>
-                    <Button variant="ghost" size="sm" onClick={() => setItinerary([])} className="h-8 px-2 text-xs text-white/50 hover:text-white">
-                      Reset
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={async () => {
+                          const res = await saveItinerary(itineraryName, selectedCity.name, selectedMode, selectedDays!, itinerary)
+                          if (res.error) alert(res.error)
+                          else alert('Itinerary saved!')
+                        }} 
+                        className="h-8 px-3 text-xs bg-white/5 border-white/10 hover:bg-white/10 text-white"
+                      >
+                        <BookmarkPlus className="w-3.5 h-3.5 mr-1" /> Save
+                      </Button>
+                      <Button variant="ghost" size="sm" onClick={() => setItinerary([])} className="h-8 px-2 text-xs text-white/50 hover:text-white">
+                        Reset
+                      </Button>
+                    </div>
                   </div>
                 </div>
                 

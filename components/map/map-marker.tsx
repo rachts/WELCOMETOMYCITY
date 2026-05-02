@@ -13,6 +13,7 @@ interface MapMarkerProps {
 }
 
 export function MapMarker({ place, isSelected, onClick }: MapMarkerProps) {
+  const [isHovered, setIsHovered] = React.useState(false)
   
   // Determine style based on category/scores
   const isHiddenGem = place.hiddenGemScore > 0.7
@@ -21,7 +22,6 @@ export function MapMarker({ place, isSelected, onClick }: MapMarkerProps) {
   let Icon = MapPin
   let glowColor = "bg-primary/20"
   let borderColor = "border-primary"
-  let iconColor = "text-primary-foreground"
   let bgColor = "bg-primary"
 
   if (isHiddenGem) {
@@ -53,27 +53,45 @@ export function MapMarker({ place, isSelected, onClick }: MapMarkerProps) {
     >
       <motion.div
         initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: isSelected ? 1.3 : 1, opacity: 1 }}
-        whileHover={{ scale: 1.2 }}
-        className={`cursor-pointer relative flex items-center justify-center ${
-          isSelected ? "z-50" : "z-10"
-        }`}
+        animate={{ 
+          scale: isSelected ? 1.3 : 1, 
+          opacity: 1,
+          zIndex: (isSelected || isHovered) ? 50 : 10 
+        }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className="cursor-pointer relative flex flex-col items-center"
       >
+        {/* Floating Label */}
+        {(isSelected || isHovered) && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.8 }}
+            animate={{ opacity: 1, y: -45, scale: 1 }}
+            className="absolute whitespace-nowrap px-3 py-1.5 rounded-lg bg-black/80 backdrop-blur-md border border-white/10 text-white text-[10px] font-bold tracking-wider uppercase shadow-2xl pointer-events-none"
+          >
+            {place.name}
+            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-black/80 border-r border-b border-white/10 rotate-45" />
+          </motion.div>
+        )}
+
         {/* Animated Glow */}
-        {(isSelected || isHiddenGem) && (
+        {(isSelected || isHovered || isHiddenGem) && (
           <motion.div 
-            className={`absolute inset-0 rounded-full blur-md ${glowColor}`}
-            animate={{ scale: [1, 1.5, 1] }}
+            className={`absolute inset-0 rounded-full blur-xl ${glowColor}`}
+            animate={{ 
+              scale: isHovered ? [1, 1.8, 1] : [1, 1.5, 1],
+              opacity: isHovered ? 0.8 : 0.4
+            }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           />
         )}
 
         {/* Pin */}
-        <div className={`p-2 rounded-full shadow-2xl backdrop-blur-md border ${
+        <div className={`p-2.5 rounded-full shadow-2xl backdrop-blur-md border transition-all duration-500 ${
           isSelected 
-            ? `${bgColor} text-white ${borderColor}` 
-            : `bg-black/60 text-white border-white/20 hover:${borderColor}`
-        } transition-colors duration-300`}>
+            ? `${bgColor} text-white ${borderColor} shadow-[0_0_20px_rgba(0,0,0,0.4)]` 
+            : `bg-black/40 text-white border-white/20 hover:border-white/60`
+        }`}>
           <Icon className="w-4 h-4" />
         </div>
       </motion.div>
