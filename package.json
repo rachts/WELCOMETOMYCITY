@@ -2,6 +2,7 @@
   "name": "WELCOME-TO-MY-CITY",
   "version": "0.1.0",
   "private": true,
+  "author": "Rachit",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

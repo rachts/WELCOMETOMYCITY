@@ -1,121 +1,75 @@
-# WELCOMETOMYCITY
-
-A comprehensive civic-tech web platform for city mobility and tourism across major Indian metro cities. Built with Next.js 15, React 19, and Tailwind CSS.
-
-## Features
-
-### Transport Planner
-- Compare routes across Metro, Bus, Taxi, and Walking
-- Real-time cost and duration estimates
-- Interchange information for metro routes
-- Comprehensive WBTC bus route database (80+ routes for Kolkata)
-
-### City Explorer
-- Browse categorized tourist spots (Heritage, Religious, Nature, Culture, Food, Shopping)
-- Search and filter functionality
-- Detailed place information with nearby metro stations
-- Direct Google Maps integration
-
-### Trip Planner
-- Generate optimized 1-3 day itineraries
-- Route optimization for efficient travel
-- Travel time estimates between destinations
-- Nearby transport options for each stop
-
-### Multi-City Support
-12 major Indian metros with city-specific data:
-- Delhi, Mumbai, Kolkata, Chennai
-- Bangalore, Hyderabad, Ahmedabad, Pune
-- Jaipur, Lucknow, Kochi, Nagpur
-
-## Tech Stack
-
-- **Framework**: Next.js 15 (App Router)
-- **UI**: React 19, Tailwind CSS v4, shadcn/ui
-- **Icons**: Lucide React
-- **State**: React Context API
-- **Theming**: Dark/Light mode support
-
-## Getting Started
-
-### Prerequisites
-- Node.js 18.17 or later
-- npm, yarn, or pnpm
-
-### Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/rachts/welcometomycity.git
-cd welcometomycity
-
-# Install dependencies
-npm install
-
-# Run development server
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## Project Structure
-
-```
-├── app/
-│   ├── about/          # About page
-│   ├── explore/        # City Explorer page
-│   ├── plan/           # Trip Planner page
-│   ├── transport/      # Transport Planner
-│   │   └── bus/        # Bus route finder
-│   ├── globals.css     # Global styles & theme
-│   ├── layout.tsx      # Root layout
-│   └── page.tsx        # Homepage
-├── components/
-│   ├── explore/        # Explorer components
-│   ├── plan/           # Planner components
-│   ├── transport/      # Transport components
-│   ├── ui/             # shadcn/ui components
-│   ├── city-switcher.tsx
-│   ├── footer.tsx
-│   ├── navbar.tsx
-│   └── theme-toggle.tsx
-├── lib/
-│   ├── data/           # City, station, place, bus data
-│   ├── bus-utils.ts    # Bus route matching logic
-│   ├── city-context.tsx # City state management
-│   ├── itinerary-generator.ts
-│   ├── route-calculator.ts
-│   └── types.ts
-└── public/             # Static assets
-```
-
-## Roadmap
-
-- [ ] Real-time metro/bus tracking integration
-- [ ] User accounts and saved itineraries
-- [ ] Offline mode with PWA support
-- [ ] Multi-language support (Hindi, Bengali, Tamil, etc.)
-- [ ] Community reviews and ratings
-- [ ] Complete data for all 12 cities
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-## Disclaimer
-
-This is a community project for educational purposes. Transport schedules, fares, and timings are approximate and may not reflect real-time data. Always verify with official sources before planning your travel.
+# 🏙️ WELCOMETOMYCITY: Technical Architecture Report
+### *The Emotion-First City Operating System*
+**Created by Rachit**
 
 ---
 
-Built with care for the cities of India
+## 🏗️ 1. System Overview
+WELCOMETOMYCITY is built on a **Map-First Canvas Architecture**. Unlike traditional travel apps that treat maps as a secondary widget, this platform utilizes the map as the primary viewport, with a layer of absolute-positioned, glassmorphism UI components floating above it.
+
+### Core Architecture Principles:
+- **Immersive Viewport**: Full-screen MapLibre canvas (`absolute inset-0`).
+- **Asynchronous Data Layer**: Next.js 15 Server Components for secure, high-performance database fetching.
+- **Stateful Intelligence**: Supabase-backed user persistence for bookmarks and itineraries.
+
+---
+
+## 🧠 2. The Experience Engine
+The "brain" of the platform is the **Experience Engine**, which replaces traditional category filters with **Emotional Vibe Mapping**.
+
+### Emotional Data Model
+Every location in our curated Supabase dataset is scored across multiple emotional vectors:
+- **Romantic**: Sunset-optimized, low-crowd, heritage-focused.
+- **Peaceful**: High nature score, quiet zones.
+- **Hidden Gem**: High "offbeat" score, curated by local intelligence.
+- **Cultural**: Deep heritage and historical weighting.
+
+### Scoring Logic (`lib/experience-engine.ts`)
+The engine calculates a "Vibe Match" score for every location, allowing the UI to dynamically reorder and highlight spots that match the user's current mood.
+
+---
+
+## 🗺️ 3. Map Canvas System
+We utilize **MapLibre GL JS** to deliver a high-performance, cinematic mapping experience.
+
+- **The Dark Matter Layer**: A custom tileset optimized for our "Deep Space" theme.
+- **Dynamic GeoJSON Routing**: Our itinerary generator doesn't just return a list; it injects a `LineString` GeoJSON layer into the map to draw glowing, animated paths between destinations.
+- **Contextual Markers**: Custom HTML markers built with Framer Motion that pulse and glow based on their emotional category.
+
+---
+
+## 🛰️ 4. Data Flow & Backend
+We transitioned from a static JSON architecture to a live **Supabase / PostgreSQL** backend.
+
+### Server Actions Architecture
+We utilize **Next.js Server Actions** for all data mutations (Saving places, Storing itineraries). This allows for:
+- Zero-bundle-size mutations.
+- Secure, server-side database access without exposing API keys to the browser.
+- Optimistic UI updates for a snappy, high-end feel.
+
+### Database Schema
+- **`places`**: Curated city intelligence layer with metadata (hidden gem scores, best times, coordinates).
+- **`saved_places`**: User-specific bookmarks.
+- **`itineraries`**: Persisted multi-day journeys with full GeoJSON path data.
+
+---
+
+## 🎨 5. Design System: "Deep Space Glass"
+Our design language is inspired by 2025 high-end AI SaaS dashboards.
+- **Theme**: Persistent Dark Mode (`#05070B`).
+- **Surface**: `backdrop-blur-xl` with `bg-white/5` (Glassmorphism).
+- **Accents**: Neon Cyan, Indigo, and Rose to represent different city "vibes."
+- **Typography**: Space Grotesk for a technical, modern aesthetic.
+
+---
+
+## 🚦 6. Current Implementation Status
+- [x] **Phase 1-4**: Core UI, Experience Engine, and Map Canvas.
+- [x] **Phase 5**: Supabase Auth & Dashboard.
+- [x] **Phase 6**: Curated Data Layer (JSON to Postgres Migration).
+- [ ] **Upcoming**: Real-time Transit API Integration.
+- [ ] **Upcoming**: PWA Offline Support.
+
+---
+
+Built with care for the cities of India by **Rachit**
