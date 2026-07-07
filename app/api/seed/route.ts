@@ -1,38 +1,56 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import kolkataData from '@/lib/data/places.json'
-import type { Place } from '@/lib/types'
 
 export async function GET() {
   try {
-    // We must use the Service Role key to bypass RLS for seeding,
-    // OR we can just allow the ANON key to insert if RLS allows it.
-    // For this seed script, if RLS blocks ANON insert, we need the service role key.
-    // However, since this is an admin script, we'll try with ANON first, 
-    // but the user should ideally temporarily disable RLS for insertion or use service_role.
-    
-    // Using the standard client for now. 
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY! // Note: RLS must allow insert or use service_role key
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     )
 
-    const places: Place[] = kolkataData.places as Place[]
+    // Using any for places since the JSON might not perfectly match the NEW Place type yet
+    const places: any[] = kolkataData.places
 
     const insertData = places.map((p) => ({
       id: p.id,
-      city_id: 'kolkata',
+      country: p.country || 'India',
+      state: p.state || 'West Bengal',
+      city: p.city || 'Kolkata',
+      locality: p.locality || null,
+      
       name: p.name,
       category: p.category,
-      lat: p.lat,
-      lng: p.lng,
-      image: p.image,
-      description: p.description,
-      story: p.story,
-      emotion_scores: p.emotionScores,
-      hidden_gem_score: p.hiddenGemScore,
-      best_time: p.bestTime,
-      crowd_level: p.crowdLevel,
+      vibes: p.vibes || [],
+      
+      latitude: p.latitude || p.lat,
+      longitude: p.longitude || p.lng,
+      
+      images: p.images || (p.image ? [p.image] : []),
+      short_description: p.shortDescription || p.description || '',
+      long_description: p.longDescription || p.story || null,
+      
+      average_visit_time: p.averageVisitTime || null,
+      best_season: p.bestSeason || null,
+      best_time: p.bestTime || p.best_time || null,
+      entry_fee: p.entryFee || null,
+      
+      rating: p.rating || null,
+      crowd_level: p.crowdLevel || p.crowd_level || null,
+      photography_score: p.photographyScore || null,
+      accessibility: p.accessibility || null,
+      
+      tags: p.tags || [],
+      nearby_places: p.nearbyPlaces || [],
+      
+      google_place_id: p.googlePlaceId || null,
+      opening_hours: p.openingHours || null,
+      travel_tips: p.travelTips || [],
+      famous_for: p.famousFor || null,
+      
+      emotion_scores: p.emotionScores || p.emotion_scores || {},
+      hidden_gem_score: p.hiddenGemScore || p.hidden_gem_score || 0.0,
+      popularity_score: p.popularityScore || null,
     }))
 
     const { data, error } = await supabase
@@ -44,7 +62,7 @@ export async function GET() {
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
-    return NextResponse.json({ message: 'Successfully seeded 25 places to Supabase!', count: insertData.length })
+    return NextResponse.json({ message: 'Successfully seeded places to Supabase!', count: insertData.length })
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 })
   }

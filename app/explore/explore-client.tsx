@@ -12,6 +12,9 @@ import { getPlacesForMode, getModeColor } from "@/lib/experience-engine"
 import type { Place, ExperienceMode } from "@/lib/types"
 import { motion, AnimatePresence } from "framer-motion"
 import { savePlace } from "./actions"
+import { BentoGrid } from "@/components/collections/bento-grid"
+import type { Collection } from "@/lib/types"
+import { getCollectionsByCity } from "@/lib/api/collections"
 
 // Dynamically import map to avoid SSR issues with MapLibre
 const CityMap = dynamic(() => import('@/components/map/city-map').then(mod => mod.CityMap), { 
@@ -31,19 +34,41 @@ const MODES: { id: ExperienceMode | "all", label: string, icon: any, desc: strin
   { id: "food-crawl", label: "Food Crawl", icon: Utensils, desc: "Culinary adventures" }
 ]
 
+import { getPlacesByCity } from "@/lib/api/places"
+
 export function ExploreClient({ initialPlaces }: { initialPlaces: Place[] }) {
   const { selectedCity } = useCity()
   const [mode, setMode] = useState<ExperienceMode | "all">("all")
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null)
+  
+  const [basePlaces, setBasePlaces] = useState<Place[]>([])
+  const [collections, setCollections] = useState<Collection[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [viewState, setViewState] = useState<"places" | "collections">("places")
+  const [selectedCollection, setSelectedCollection] = useState<Collection | null>(null)
 
-  const isKolkata = selectedCity.id === "kolkata"
-  // If we had more cities in the DB, we would filter or fetch them dynamically.
-  // For now, initialPlaces contains the Supabase places.
-  const basePlaces = isKolkata ? initialPlaces : []
+  useEffect(() => {
+    async function loadPlaces() {
+      setIsLoading(true)
+      const [fetchedPlaces, fetchedCollections] = await Promise.all([
+        getPlacesByCity(selectedCity.id),
+        getCollectionsByCity(selectedCity.id)
+      ])
+      setBasePlaces(fetchedPlaces)
+      setCollections(fetchedCollections)
+      setSelectedPlace(null)
+      setSelectedCollection(null)
+      setIsLoading(false)
+    }
+    loadPlaces()
+  }, [selectedCity.id])
 
   const feedPlaces = useMemo(() => {
+    if (viewState === "collections" && selectedCollection) {
+      return basePlaces.filter(p => selectedCollection.places.includes(p.id))
+    }
     return getPlacesForMode(basePlaces, mode)
-  }, [basePlaces, mode])
+  }, [basePlaces, mode, viewState, selectedCollection])
 
   useEffect(() => {
     if (selectedPlace && !feedPlaces.find(p => p.id === selectedPlace.id)) {
@@ -62,11 +87,12 @@ export function ExploreClient({ initialPlaces }: { initialPlaces: Place[] }) {
   }[themeColor] || "text-primary"
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-[#05070B] relative">
+    <div className="flex h-screen w-full overflow-hidden bg-[#05070B] relative" suppressHydrationWarning>
       {/* BACKGROUND CANVAS: The Map */}
       <div className="absolute inset-0 z-0">
         <CityMap 
           places={feedPlaces} 
+          city={selectedCity}
           mode={mode} 
           onPlaceSelect={setSelectedPlace}
           selectedPlaceId={selectedPlace?.id}
@@ -111,15 +137,78 @@ export function ExploreClient({ initialPlaces }: { initialPlaces: Place[] }) {
           </GlassCard>
 
           {/* Place Feed */}
-          <GlassCard className="flex-1 flex flex-col overflow-hidden">
-            <div className="p-4 border-b border-white/10 flex justify-between items-center bg-black/20">
-              <h2 className="font-bold">Curated Feed</h2>
+          <GlassCard className="flex-1 min-h-0 flex flex-col overflow-hidden">
+            <div className="p-4 border-b border-white/10 flex justify-between items-center bg-black/20 shrink-0">
+              <div className="flex gap-4">
+                <button 
+                  onClick={() => setViewState("places")} 
+                  className={`text-sm transition-colors ${viewState === "places" ? "font-bold text-white" : "text-white/50 hover:text-white/80"}`}
+                >
+                  Places
+                </button>
+                <button 
+                  onClick={() => setViewState("collections")} 
+                  className={`text-sm transition-colors ${viewState === "collections" ? "font-bold text-white" : "text-white/50 hover:text-white/80"}`}
+                >
+                  Collections
+                </button>
+              </div>
               <span className="text-xs text-white/50 font-medium px-2 py-1 bg-white/5 rounded-full border border-white/10">
-                {feedPlaces.length} places
+                {viewState === "places" ? `${feedPlaces.length} places` : `${collections.length} collections`}
               </span>
             </div>
-            <ScrollArea className="flex-1 p-4">
-              {feedPlaces.length > 0 ? (
+            <div className="flex-1 overflow-y-auto p-4 overflow-x-hidden">
+              {isLoading ? (
+                <div className="h-full flex flex-col items-center justify-center text-center p-6 opacity-50">
+                  <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4" />
+                  <p className="text-sm text-white/70">Loading {selectedCity.name}...</p>
+                </div>
+              ) : viewState === "collections" ? (
+                selectedCollection ? (
+                  <div className="flex flex-col gap-4">
+                    <Button variant="ghost" className="self-start text-xs text-white/70 h-auto py-1 px-2" onClick={() => setSelectedCollection(null)}>
+                      &larr; Back to Collections
+                    </Button>
+                    <div>
+                      <h3 className="font-bold text-xl mb-1">{selectedCollection.title}</h3>
+                      <p className="text-sm text-white/70">{selectedCollection.description}</p>
+                    </div>
+                    <div className="flex flex-col gap-3 pb-8">
+                      {feedPlaces.map((place) => (
+                        <motion.div 
+                          key={place.id}
+                          layoutId={`card-${place.id}`}
+                          whileHover={{ scale: 1.02 }}
+                          onClick={() => setSelectedPlace(place)}
+                          className={`cursor-pointer rounded-xl border p-3 transition-colors ${
+                            selectedPlace?.id === place.id ? "bg-white/10 border-white/30 shadow-[0_0_15px_rgba(255,255,255,0.05)]" : "bg-black/40 hover:bg-white/5 border-white/5"
+                          }`}
+                        >
+                          <div className="flex gap-3 h-20">
+                            <div className="w-20 shrink-0 rounded-lg overflow-hidden bg-black/50">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img src={place.images?.[0]} alt={place.name} className="w-full h-full object-cover" />
+                            </div>
+                            <div className="flex flex-col justify-between py-1 overflow-hidden">
+                              <div>
+                                <h4 className="font-semibold text-sm line-clamp-1 text-white/90">{place.name}</h4>
+                                <p className="text-xs text-white/50 line-clamp-1">{place.category}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+                ) : collections.length > 0 ? (
+                  <BentoGrid collections={collections} onSelectCollection={setSelectedCollection} />
+                ) : (
+                  <div className="h-full flex flex-col items-center justify-center text-center p-6 opacity-50">
+                    <Sparkles className="w-8 h-8 mb-2" />
+                    <p className="text-sm">No curated collections yet for {selectedCity.name}.</p>
+                  </div>
+                )
+              ) : feedPlaces.length > 0 ? (
                 <div className="flex flex-col gap-3 pb-8">
                   {feedPlaces.map((place) => (
                     <motion.div 
@@ -134,7 +223,7 @@ export function ExploreClient({ initialPlaces }: { initialPlaces: Place[] }) {
                       <div className="flex gap-3 h-20">
                         <div className="w-20 shrink-0 rounded-lg overflow-hidden bg-black/50">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={place.image} alt={place.name} className="w-full h-full object-cover" />
+                          <img src={place.images?.[0]} alt={place.name} className="w-full h-full object-cover" />
                         </div>
                         <div className="flex flex-col justify-between py-1 overflow-hidden">
                           <div>
@@ -143,7 +232,7 @@ export function ExploreClient({ initialPlaces }: { initialPlaces: Place[] }) {
                           </div>
                           {mode !== "all" && (
                             <div className={`text-[10px] font-medium w-fit px-1.5 py-0.5 rounded bg-white/5 border border-white/10 ${textThemeClasses}`}>
-                              {mode === 'hidden-gems' ? `${Math.round(place.hiddenGemScore * 100)}% Match` : 'Highly Recommended'}
+                              {mode === 'hidden-gems' ? `${Math.round(place.hiddenGemScore * 10)}% Match` : 'Highly Recommended'}
                             </div>
                           )}
                         </div>
@@ -157,7 +246,7 @@ export function ExploreClient({ initialPlaces }: { initialPlaces: Place[] }) {
                   <p className="text-sm">No places found for this mode in {selectedCity.name}.</p>
                 </div>
               )}
-            </ScrollArea>
+            </div>
           </GlassCard>
 
         </div>
@@ -196,7 +285,7 @@ export function ExploreClient({ initialPlaces }: { initialPlaces: Place[] }) {
                   </div>
                   <div className="h-40 w-full rounded-xl overflow-hidden mb-4 relative shadow-inner">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={selectedPlace.image} alt={selectedPlace.name} className="object-cover w-full h-full" />
+                    <img src={selectedPlace.images?.[0]} alt={selectedPlace.name} className="object-cover w-full h-full" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                     <div className="absolute bottom-3 left-3 right-3 flex justify-between items-end">
                       <span className="text-xs font-medium px-2 py-1 bg-black/60 backdrop-blur-md rounded-md border border-white/10">
@@ -207,7 +296,7 @@ export function ExploreClient({ initialPlaces }: { initialPlaces: Place[] }) {
                   <div className="flex items-start gap-3 text-sm">
                     <Info className={`w-4 h-4 shrink-0 mt-0.5 ${textThemeClasses}`} />
                     <p className="text-white/70 italic leading-relaxed">
-                      "{selectedPlace.story || selectedPlace.description}"
+                      "{selectedPlace.longDescription || selectedPlace.shortDescription}"
                     </p>
                   </div>
                 </GlassCard>

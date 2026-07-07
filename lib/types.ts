@@ -18,23 +18,60 @@ export type Emotion =
 
 export type ExperienceMode = "romantic" | "hidden-gems" | "cultural-deep-dive" | "food-crawl"
 
+export type Vibe = 
+  | "Romantic"
+  | "Hidden Gem"
+  | "Peaceful"
+  | "Foodie"
+  | "Heritage"
+  | "Sunset"
+  | "Photography"
+  | "Nightlife"
+  | "Family"
+  | "Nature"
+
 export interface Place {
   id: string
+  country: string
+  state: string
+  city: string
+  locality?: string
+  
   name: string
-  category: PlaceCategory
-  lat: number
-  lng: number
-  description: string
-  story: string
+  category: string
+  vibes: Vibe[]
+  
+  latitude: number
+  longitude: number
+  
+  images: string[]
+  shortDescription: string
+  longDescription?: string
+  
+  averageVisitTime?: string
+  bestSeason?: string
+  bestTime?: string
+  entryFee?: string
+  
+  rating?: number
+  crowdLevel?: string
+  photographyScore?: number
+  accessibility?: string
+  
+  tags?: string[]
+  nearbyPlaces?: string[]
+  
+  googlePlaceId?: string
+  openingHours?: string
+  travelTips?: string[]
+  famousFor?: string
+  
   emotionScores: Partial<Record<Emotion, number>>
   hiddenGemScore: number
-  bestTime: string
-  entryFee: string
-  nearbyStation: string
-  image: string
+  popularityScore?: number
 }
 
-export type PlaceCategory = "historical" | "cultural" | "religious" | "food-markets" | "nature"
+export type PlaceCategory = "historical" | "cultural" | "religious" | "food-markets" | "nature" | string
 
 export interface RouteOption {
   id: string
@@ -64,4 +101,13 @@ export interface ItineraryDay {
   places: Place[]
   totalDistance: number
   totalDuration: number
+}
+
+export interface Collection {
+  id: string
+  city: string
+  title: string
+  description: string
+  coverImage: string
+  places: string[] // Array of place IDs
 }

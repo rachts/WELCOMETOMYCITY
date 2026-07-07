@@ -9,6 +9,8 @@ export interface CityData {
   metroStations: number
   population: string
   primaryColor: string
+  latitude: number
+  longitude: number
 }
 
 export const cities: CityData[] = [
@@ -24,6 +26,8 @@ export const cities: CityData[] = [
     metroStations: 24,
     population: "14.8M",
     primaryColor: "teal",
+    latitude: 22.5726,
+    longitude: 88.3639,
   },
   {
     id: "delhi",
@@ -37,6 +41,8 @@ export const cities: CityData[] = [
     metroStations: 286,
     population: "32M",
     primaryColor: "red",
+    latitude: 28.6139,
+    longitude: 77.2090,
   },
   {
     id: "mumbai",
@@ -50,6 +56,8 @@ export const cities: CityData[] = [
     metroStations: 45,
     population: "21M",
     primaryColor: "blue",
+    latitude: 19.0760,
+    longitude: 72.8777,
   },
   {
     id: "chennai",
@@ -63,6 +71,8 @@ export const cities: CityData[] = [
     metroStations: 40,
     population: "11M",
     primaryColor: "purple",
+    latitude: 13.0827,
+    longitude: 80.2707,
   },
   {
     id: "bangalore",
@@ -76,6 +86,8 @@ export const cities: CityData[] = [
     metroStations: 55,
     population: "13M",
     primaryColor: "green",
+    latitude: 12.9716,
+    longitude: 77.5946,
   },
   {
     id: "hyderabad",
@@ -88,6 +100,8 @@ export const cities: CityData[] = [
     metroStations: 57,
     population: "10M",
     primaryColor: "yellow",
+    latitude: 17.3850,
+    longitude: 78.4867,
   },
   {
     id: "ahmedabad",
@@ -101,6 +115,8 @@ export const cities: CityData[] = [
     metroStations: 32,
     population: "8M",
     primaryColor: "orange",
+    latitude: 23.0225,
+    longitude: 72.5714,
   },
   {
     id: "pune",
@@ -113,6 +129,8 @@ export const cities: CityData[] = [
     metroStations: 30,
     population: "7M",
     primaryColor: "indigo",
+    latitude: 18.5204,
+    longitude: 73.8567,
   },
   {
     id: "jaipur",
@@ -125,6 +143,8 @@ export const cities: CityData[] = [
     metroStations: 11,
     population: "4M",
     primaryColor: "pink",
+    latitude: 26.9124,
+    longitude: 75.7873,
   },
   {
     id: "lucknow",
@@ -137,6 +157,8 @@ export const cities: CityData[] = [
     metroStations: 21,
     population: "3.5M",
     primaryColor: "amber",
+    latitude: 26.8467,
+    longitude: 80.9462,
   },
   {
     id: "kochi",
@@ -149,6 +171,8 @@ export const cities: CityData[] = [
     metroStations: 22,
     population: "2.1M",
     primaryColor: "cyan",
+    latitude: 9.9312,
+    longitude: 76.2673,
   },
   {
     id: "nagpur",
@@ -161,6 +185,8 @@ export const cities: CityData[] = [
     metroStations: 36,
     population: "2.9M",
     primaryColor: "orange",
+    latitude: 21.1458,
+    longitude: 79.0882,
   },
 ]
 

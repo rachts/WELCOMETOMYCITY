@@ -43,8 +43,8 @@ export function MapMarker({ place, isSelected, onClick }: MapMarkerProps) {
 
   return (
     <Marker
-      longitude={place.lng}
-      latitude={place.lat}
+      longitude={place.longitude}
+      latitude={place.latitude}
       anchor="bottom"
       onClick={e => {
         e.originalEvent.stopPropagation()

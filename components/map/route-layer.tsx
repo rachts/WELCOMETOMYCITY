@@ -20,7 +20,7 @@ export function RouteLayer({ places, routeColor = "#00f0ff" }: RouteLayerProps) 
       properties: {},
       geometry: {
         type: "LineString" as const,
-        coordinates: places.map(p => [p.lng, p.lat])
+        coordinates: places.map(p => [p.longitude, p.latitude])
       }
     }
   }, [places])

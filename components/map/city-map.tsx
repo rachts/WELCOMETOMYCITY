@@ -5,10 +5,12 @@ import Map, { NavigationControl } from "react-map-gl/maplibre"
 import { MapMarker } from "./map-marker"
 import { RouteLayer } from "./route-layer"
 import type { Place, ExperienceMode } from "@/lib/types"
+import type { CityData } from "@/lib/data/cities"
 import "maplibre-gl/dist/maplibre-gl.css"
 
 interface CityMapProps {
   places: Place[]
+  city: CityData
   mode?: ExperienceMode | "all"
   onPlaceSelect: (place: Place) => void
   selectedPlaceId?: string
@@ -18,39 +20,39 @@ interface CityMapProps {
 // Using Carto's free Dark Matter style which perfectly fits our #05070B aesthetic without needing an API key immediately.
 const DARK_MATTER_STYLE = "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
 
-export function CityMap({ places, mode = "all", onPlaceSelect, selectedPlaceId, showRoutes = false }: CityMapProps) {
+export function CityMap({ places, city, mode = "all", onPlaceSelect, selectedPlaceId, showRoutes = false }: CityMapProps) {
   const [viewState, setViewState] = useState({
-    longitude: 88.3639, // Default to Kolkata
-    latitude: 22.5726,
+    longitude: city.longitude,
+    latitude: city.latitude,
     zoom: 12,
     pitch: 45, // Add some 3D pitch for cinematic feel
     bearing: -17.6
   })
 
-  // Smoothly animate to selected place
+  // Smoothly animate to selected place or city center
   useMemo(() => {
     if (places.length > 0 && selectedPlaceId) {
       const selected = places.find(p => p.id === selectedPlaceId)
       if (selected) {
         setViewState(prev => ({
           ...prev,
-          longitude: selected.lng,
-          latitude: selected.lat,
+          longitude: selected.longitude,
+          latitude: selected.latitude,
           zoom: 15,
           transitionDuration: 1000 // Smooth fly to
         }))
       }
-    } else if (places.length > 0 && !selectedPlaceId) {
-      // If we have places but no selection, center on the first place
+    } else {
+      // Center on the city
       setViewState(prev => ({
         ...prev,
-        longitude: places[0].lng,
-        latitude: places[0].lat,
+        longitude: city.longitude,
+        latitude: city.latitude,
         zoom: 12,
         transitionDuration: 1000
       }))
     }
-  }, [places, selectedPlaceId])
+  }, [places, selectedPlaceId, city])
 
   // Determine route color based on mode
   const routeColor = {

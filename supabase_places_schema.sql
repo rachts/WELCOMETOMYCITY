@@ -1,18 +1,47 @@
+-- Drop existing table if it exists (warning: this will delete existing data)
+DROP TABLE IF EXISTS public.places CASCADE;
+
 -- Create places table
 CREATE TABLE public.places (
   id TEXT PRIMARY KEY,
-  city_id TEXT NOT NULL,
+  country TEXT NOT NULL DEFAULT 'India',
+  state TEXT NOT NULL,
+  city TEXT NOT NULL,
+  locality TEXT,
+  
   name TEXT NOT NULL,
   category TEXT NOT NULL,
-  lat DOUBLE PRECISION NOT NULL,
-  lng DOUBLE PRECISION NOT NULL,
-  image TEXT,
-  description TEXT,
-  story TEXT,
+  vibes TEXT[] NOT NULL DEFAULT '{}',
+  
+  latitude DOUBLE PRECISION NOT NULL,
+  longitude DOUBLE PRECISION NOT NULL,
+  
+  images TEXT[] NOT NULL DEFAULT '{}',
+  short_description TEXT NOT NULL,
+  long_description TEXT,
+  
+  average_visit_time TEXT,
+  best_season TEXT,
+  best_time TEXT,
+  entry_fee TEXT,
+  
+  rating DOUBLE PRECISION,
+  crowd_level TEXT,
+  photography_score DOUBLE PRECISION,
+  accessibility TEXT,
+  
+  tags TEXT[] DEFAULT '{}',
+  nearby_places TEXT[] DEFAULT '{}',
+  
+  google_place_id TEXT,
+  opening_hours TEXT,
+  travel_tips TEXT[] DEFAULT '{}',
+  famous_for TEXT,
+  
   emotion_scores JSONB NOT NULL DEFAULT '{}'::jsonb,
   hidden_gem_score DOUBLE PRECISION NOT NULL DEFAULT 0.0,
-  best_time TEXT,
-  crowd_level TEXT,
+  popularity_score DOUBLE PRECISION,
+  
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 

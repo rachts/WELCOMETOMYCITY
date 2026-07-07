@@ -71,6 +71,15 @@ Integrated **Supabase** for secure user accounts. Users can:
 
 ---
 
+## 🏗️ 7. Startup-Grade Architecture & Scalability
+To move beyond a simple prototype and ensure enterprise-level security and performance, we implemented a robust backend proxy architecture:
+
+- **Secure API Proxies**: All Google Maps integrations (Places Nearby Search, Place Details) are routed through Next.js API Routes (`/api/google/*`). This ensures that sensitive API keys are never exposed to the client-side, preventing quota abuse and unauthorized access.
+- **Keyless Image Streaming**: Instead of serving Google Map Photo URLs containing API keys to the frontend, our backend intercepts Google's `302 Found` redirects and securely serves keyless image URLs (`lh3.googleusercontent.com`) directly to the client map interface.
+- **Streaming AI Travel Assistant**: Leveraging the Vercel AI SDK (`/api/chat`), we stream context-aware, emotionally resonant travel recommendations directly to the user in real-time. The AI acts as a hyper-personalized local guide rather than just a generic query bot.
+- **Cost Optimization Foundation**: By funneling all third-party API requests through our backend proxy, we have laid the groundwork to cache popular location queries (e.g., "Victoria Memorial") via Redis, drastically reducing API overhead as the platform scales.
+
+---
 ## 📈 7. Impact & Use Cases
 - **The "Digital Nomad"**: Quickly finding a "Peaceful Escape" to work or relax.
 - **The "First-Time Visitor"**: Avoiding tourist traps and experiencing the city's true soul.
