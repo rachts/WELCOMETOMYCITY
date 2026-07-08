@@ -4,9 +4,18 @@ import { generateObject } from "ai"
 import { cityPlacesSchema } from "@/lib/places-schema"
 import { getCityById } from "@/lib/data/cities"
 import type { Place } from "@/lib/types"
+import { z } from "zod"
 
-export async function generateCityPlaces(cityId: string): Promise<{ places: Place[]; error?: string }> {
+const cityIdSchema = z.string().min(1, "Invalid city ID")
+
+export async function generateCityPlaces(rawCityId: string): Promise<{ places: Place[]; error?: string }> {
   try {
+    const parseResult = cityIdSchema.safeParse(rawCityId)
+    if (!parseResult.success) {
+      return { places: [], error: "Invalid city ID format" }
+    }
+    const cityId = parseResult.data
+
     const city = getCityById(cityId)
     if (!city) {
       return { places: [], error: "City not found" }
@@ -53,7 +62,6 @@ Make the descriptions engaging and informative for tourists.`,
     return { places: placesWithImages }
   } catch (error) {
     console.error("[v0] Error generating places:", error)
-    const errorMessage = error instanceof Error ? error.message : "Failed to generate places"
-    return { places: [], error: errorMessage }
+    return { places: [], error: "Internal Server Error" }
   }
 }

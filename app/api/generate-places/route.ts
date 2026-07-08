@@ -2,10 +2,26 @@ import { generateObject } from "ai"
 import { google } from "@ai-sdk/google"
 import { cityPlacesSchema } from "@/lib/places-schema"
 import { getCityById } from "@/lib/data/cities"
+import { z } from "zod"
+
+const requestSchema = z.object({
+  cityId: z.string().min(1, "cityId is required")
+})
 
 export async function POST(req: Request) {
   try {
-    const { cityId } = await req.json()
+    let body
+    try {
+      body = await req.json()
+    } catch {
+      return Response.json({ error: "Invalid JSON" }, { status: 400 })
+    }
+
+    const parseResult = requestSchema.safeParse(body)
+    if (!parseResult.success) {
+      return Response.json({ error: "Invalid request payload" }, { status: 400 })
+    }
+    const { cityId } = parseResult.data
 
     const city = getCityById(cityId)
     if (!city) {
