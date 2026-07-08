@@ -21,8 +21,6 @@ export async function generateCityPlaces(rawCityId: string): Promise<{ places: P
       return { places: [], error: "City not found" }
     }
 
-    console.log("[v0] Starting place generation for:", city.name)
-
     const { object } = await generateObject({
       model: "openai/gpt-4o-mini",
       schema: cityPlacesSchema,
@@ -50,8 +48,6 @@ Focus on places that are:
 
 Make the descriptions engaging and informative for tourists.`,
     })
-
-    console.log("[v0] Generated places count:", object.places.length)
 
     // Transform the places to include proper image URLs
     const placesWithImages: Place[] = object.places.map((place) => ({
