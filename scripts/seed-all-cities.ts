@@ -25,14 +25,17 @@ if (fs.existsSync(envPath)) {
 }
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.error("Missing Supabase credentials in .env.local")
+console.log("URL:", supabaseUrl)
+console.log("Service Key:", serviceRoleKey?.slice(0, 20), "...")
+
+if (!supabaseUrl || !serviceRoleKey) {
+  console.error("Missing Supabase credentials (make sure SUPABASE_SERVICE_ROLE_KEY is set in .env.local)")
   process.exit(1)
 }
 
-const supabase = createClient(supabaseUrl, supabaseAnonKey)
+const supabase = createClient(supabaseUrl, serviceRoleKey)
 
 async function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms))
@@ -136,8 +139,8 @@ async function main() {
     // Skip Kolkata if it's already fully seeded, or just re-seed to get rich AI text
     // Actually, we'll just seed everything to ensure high quality data.
     await seedCity(city)
-    // Wait 3 seconds to avoid rate limits
-    await sleep(3000)
+    // Wait 15 seconds to avoid rate limits (Gemini free tier has 15 RPM limit)
+    await sleep(15000)
   }
   
   console.log("\n🎉 Seeding complete!")
