@@ -1,3 +1,5 @@
+import withPWAInit from '@ducanh2912/next-pwa'
+
 const securityHeaders = [
   { key: 'X-DNS-Prefetch-Control', value: 'on' },
   { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
@@ -8,6 +10,63 @@ const securityHeaders = [
   { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
   { key: 'Cross-Origin-Resource-Policy', value: 'cross-origin' }
 ]
+
+const withPWA = withPWAInit({
+  dest: 'public',
+  cacheOnFrontEndNav: true,
+  aggressiveFrontEndNavCaching: true,
+  reloadOnOnline: true,
+  swcMinify: true,
+  disable: process.env.NODE_ENV === 'development',
+  workboxOptions: {
+    disableDevLogs: true,
+    runtimeCaching: [
+      {
+        urlPattern: /^https:\/\/api\.mapbox\.com\/.*/i,
+        handler: 'CacheFirst',
+        options: {
+          cacheName: 'mapbox-api-cache',
+          expiration: {
+            maxEntries: 50,
+            maxAgeSeconds: 60 * 60 * 24 * 30, // 30 Days
+          },
+          cacheableResponse: {
+            statuses: [0, 200],
+          },
+        },
+      },
+      {
+        urlPattern: /^https:\/\/basemaps\.cartocdn\.com\/.*/i,
+        handler: 'CacheFirst',
+        options: {
+          cacheName: 'carto-basemap-cache',
+          expiration: {
+            maxEntries: 200,
+            maxAgeSeconds: 60 * 60 * 24 * 30, // 30 Days
+          },
+          cacheableResponse: {
+            statuses: [0, 200],
+          },
+        },
+      },
+      {
+        urlPattern: /^https:\/\/ebamdjmtzchinuudwjhq\.supabase\.co\/rest\/v1\/.*/i,
+        handler: 'NetworkFirst',
+        options: {
+          cacheName: 'supabase-api-cache',
+          networkTimeoutSeconds: 5,
+          expiration: {
+            maxEntries: 50,
+            maxAgeSeconds: 60 * 60 * 24, // 1 Day
+          },
+          cacheableResponse: {
+            statuses: [0, 200],
+          },
+        },
+      }
+    ]
+  }
+})
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -27,4 +86,4 @@ const nextConfig = {
   },
 }
 
-export default nextConfig
+export default withPWA(nextConfig)

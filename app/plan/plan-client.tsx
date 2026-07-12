@@ -80,6 +80,7 @@ export function PlanClient({ initialPlaces }: { initialPlaces: Place[] }) {
       <div className="absolute inset-0 z-0">
         <CityMap 
           places={allItineraryPlaces} 
+          city={selectedCity}
           mode={selectedMode}
           onPlaceSelect={setSelectedPlace}
           selectedPlaceId={selectedPlace?.id}

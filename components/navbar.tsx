@@ -40,12 +40,14 @@ export function Navbar() {
       <header className="pointer-events-auto flex items-center gap-2 p-2 rounded-full glass-panel border-white/10 shadow-2xl">
         
         <Link href="/" className="flex items-center gap-2 pl-3 pr-2 py-1 group">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 group-hover:neon-glow-cyan transition-all duration-300">
-            <Image src="/logo.png" alt="WelcomeToMyCity Logo" width={32} height={32} className="w-6 h-6 object-contain" />
-          </div>
-          <span className="font-bold text-sm tracking-widest hidden sm:inline-block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            WTMC
-          </span>
+          <Image 
+            src="/logo.png" 
+            alt="Welcome to My City" 
+            width={120} 
+            height={40} 
+            className="h-8 w-auto object-contain drop-shadow-md group-hover:scale-105 transition-transform duration-300" 
+            priority
+          />
         </Link>
 
         {/* Desktop Navigation */}

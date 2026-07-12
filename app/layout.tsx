@@ -27,7 +27,18 @@ export const metadata: Metadata = {
     "Bangalore",
     "Hyderabad",
   ],
-    generator: 'v0.app'
+  generator: 'v0.app',
+  icons: {
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "WELCOME",
+  }
 }
 
 export const viewport: Viewport = {

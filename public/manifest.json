@@ -1,0 +1,22 @@
+{
+  "name": "WELCOME TO MY CITY",
+  "short_name": "WELCOME",
+  "description": "Your unified platform to navigate India's major metro cities.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#05070B",
+  "theme_color": "#05070B",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

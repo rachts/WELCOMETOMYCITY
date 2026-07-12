@@ -15,6 +15,10 @@ import { savePlace } from "./actions"
 import { BentoGrid } from "@/components/collections/bento-grid"
 import type { Collection } from "@/lib/types"
 import { getCollectionsByCity } from "@/lib/api/collections"
+import { getWeather } from "@/lib/api/weather"
+import { AudioStoryteller } from "@/components/audio-storyteller"
+import { AIGuide } from "@/components/ai-guide"
+import { VibeTags } from "@/components/vibe-tags"
 
 // Dynamically import map to avoid SSR issues with MapLibre
 const CityMap = dynamic(() => import('@/components/map/city-map').then(mod => mod.CityMap), { 
@@ -43,6 +47,7 @@ export function ExploreClient({ initialPlaces }: { initialPlaces: Place[] }) {
   
   const [basePlaces, setBasePlaces] = useState<Place[]>([])
   const [collections, setCollections] = useState<Collection[]>([])
+  const [weather, setWeather] = useState<{condition: string, description: string, temperature: number} | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [viewState, setViewState] = useState<"places" | "collections">("places")
   const [selectedCollection, setSelectedCollection] = useState<Collection | null>(null)
@@ -50,25 +55,37 @@ export function ExploreClient({ initialPlaces }: { initialPlaces: Place[] }) {
   useEffect(() => {
     async function loadPlaces() {
       setIsLoading(true)
-      const [fetchedPlaces, fetchedCollections] = await Promise.all([
+      const [fetchedPlaces, fetchedCollections, fetchedWeather] = await Promise.all([
         getPlacesByCity(selectedCity.id),
-        getCollectionsByCity(selectedCity.id)
+        getCollectionsByCity(selectedCity.id),
+        getWeather(selectedCity.latitude, selectedCity.longitude)
       ])
       setBasePlaces(fetchedPlaces)
       setCollections(fetchedCollections)
+      setWeather(fetchedWeather)
       setSelectedPlace(null)
       setSelectedCollection(null)
       setIsLoading(false)
     }
     loadPlaces()
-  }, [selectedCity.id])
+  }, [selectedCity.id, selectedCity.latitude, selectedCity.longitude])
 
   const feedPlaces = useMemo(() => {
     if (viewState === "collections" && selectedCollection) {
       return basePlaces.filter(p => selectedCollection.places.includes(p.id))
     }
-    return getPlacesForMode(basePlaces, mode)
-  }, [basePlaces, mode, viewState, selectedCollection])
+    let places = getPlacesForMode(basePlaces, mode)
+    
+    // Weather-aware filtering
+    if (weather && ['Rain', 'Drizzle', 'Thunderstorm', 'Snow'].includes(weather.condition)) {
+      places = [...places].sort((a, b) => {
+        const aIndoor = a.vibes.some(v => ['indoor', 'cozy', 'museum', 'cafe'].includes(v.toLowerCase())) ? 1 : 0;
+        const bIndoor = b.vibes.some(v => ['indoor', 'cozy', 'museum', 'cafe'].includes(v.toLowerCase())) ? 1 : 0;
+        return bIndoor - aIndoor;
+      })
+    }
+    return places
+  }, [basePlaces, mode, viewState, selectedCollection, weather])
 
   useEffect(() => {
     if (selectedPlace && !feedPlaces.find(p => p.id === selectedPlace.id)) {
@@ -153,9 +170,16 @@ export function ExploreClient({ initialPlaces }: { initialPlaces: Place[] }) {
                   Collections
                 </button>
               </div>
-              <span className="text-xs text-white/50 font-medium px-2 py-1 bg-white/5 rounded-full border border-white/10">
-                {viewState === "places" ? `${feedPlaces.length} places` : `${collections.length} collections`}
-              </span>
+              <div className="flex items-center gap-3">
+                {weather && (
+                  <span className="text-xs text-blue-300 font-medium px-2 py-1 bg-blue-500/10 rounded-full border border-blue-500/20" title={weather.description}>
+                    {Math.round(weather.temperature)}°C {weather.condition}
+                  </span>
+                )}
+                <span className="text-xs text-white/50 font-medium px-2 py-1 bg-white/5 rounded-full border border-white/10">
+                  {viewState === "places" ? `${feedPlaces.length} places` : `${collections.length} collections`}
+                </span>
+              </div>
             </div>
             <div className="flex-1 overflow-y-auto p-4 overflow-x-hidden">
               {isLoading ? (
@@ -293,11 +317,17 @@ export function ExploreClient({ initialPlaces }: { initialPlaces: Place[] }) {
                       </span>
                     </div>
                   </div>
-                  <div className="flex items-start gap-3 text-sm">
-                    <Info className={`w-4 h-4 shrink-0 mt-0.5 ${textThemeClasses}`} />
-                    <p className="text-white/70 italic leading-relaxed">
-                      "{selectedPlace.longDescription || selectedPlace.shortDescription}"
-                    </p>
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-start gap-3 text-sm">
+                      <Info className={`w-4 h-4 shrink-0 mt-0.5 ${textThemeClasses}`} />
+                      <p className="text-white/70 italic leading-relaxed">
+                        "{selectedPlace.longDescription || selectedPlace.shortDescription}"
+                      </p>
+                    </div>
+                    {selectedPlace.vibes && selectedPlace.vibes.length > 0 && (
+                      <VibeTags currentVibes={selectedPlace.vibes} placeId={selectedPlace.id} themeClass={textThemeClasses} />
+                    )}
+                    <AudioStoryteller placeId={selectedPlace.id} text={selectedPlace.longDescription || selectedPlace.shortDescription} themeClass={textThemeClasses} />
                   </div>
                 </GlassCard>
               </motion.div>
@@ -305,6 +335,8 @@ export function ExploreClient({ initialPlaces }: { initialPlaces: Place[] }) {
           </AnimatePresence>
         </div>
 
+        {/* AI Guide Chat Overlay */}
+        <AIGuide cityContext={selectedCity.name} themeClass={textThemeClasses} />
       </div>
     </div>
   )
