@@ -21,14 +21,14 @@ export async function updateSession(request: NextRequest) {
     }
   }
 
-  const nonce = Buffer.from(crypto.randomUUID()).toString('base64')
   const cspHeader = `
     default-src 'self';
-    script-src 'self' 'nonce-${nonce}' 'strict-dynamic';
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-    img-src 'self' blob: data: https://*.googleusercontent.com https://*.supabase.co https://images.unsplash.com;
+    img-src 'self' blob: data: https://*.googleusercontent.com https://*.supabase.co https://images.unsplash.com https://*.cartocdn.com;
     font-src 'self' https://fonts.gstatic.com;
-    connect-src 'self' https://*.supabase.co https://*.googleapis.com;
+    connect-src 'self' blob: https://*.supabase.co https://*.googleapis.com https://*.cartocdn.com https://vercel.live;
+    worker-src 'self' blob:;
     object-src 'none';
     base-uri 'self';
     form-action 'self';
@@ -37,7 +37,6 @@ export async function updateSession(request: NextRequest) {
   `.replace(/\s{2,}/g, ' ').trim()
 
   const requestHeaders = new Headers(request.headers)
-  requestHeaders.set('x-nonce', nonce)
   requestHeaders.set('Content-Security-Policy', cspHeader)
 
   let supabaseResponse = NextResponse.next({

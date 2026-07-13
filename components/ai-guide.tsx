@@ -1,6 +1,6 @@
 "use client"
 
-import { useChat } from 'ai/react'
+import { useChat } from '@ai-sdk/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import { MessageSquare, X, Send, Bot, User } from 'lucide-react'
