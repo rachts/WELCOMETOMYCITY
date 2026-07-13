@@ -66,13 +66,13 @@ export function VibeTags({ currentVibes, placeId, themeClass = "text-primary" }:
 
   return (
     <div className="flex flex-wrap gap-2 mt-2">
-      {sortedVibes.map((tag) => {
+      {sortedVibes.map((tag, index) => {
         const voteData = votes.find(v => v.vibe_tag === tag)
         const netScore = voteData ? (voteData.upvotes - voteData.downvotes) : 0
         const hasVoted = localVotes[tag]
 
         return (
-          <div key={tag} className="flex items-center bg-black/40 border border-white/10 rounded-full px-2 py-1 gap-1">
+          <div key={`${tag}-${index}`} className="flex items-center bg-black/40 border border-white/10 rounded-full px-2 py-1 gap-1">
             <span className="text-xs font-medium text-white/80 pl-1 capitalize">{tag}</span>
             <div className="flex items-center gap-1 border-l border-white/10 pl-2 ml-1">
               <button 

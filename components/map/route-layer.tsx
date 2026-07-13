@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { Source, Layer } from "react-map-gl/maplibre"
-import type { LineLayer } from "react-map-gl/maplibre"
 import type { Place } from "@/lib/types"
 
 interface RouteLayerProps {
@@ -64,7 +63,7 @@ export function RouteLayer({ places, routeColor = "#00f0ff" }: RouteLayerProps) 
     geometry: routeGeometry
   }
 
-  const lineStyle: LineLayer = {
+  const lineStyle: any = {
     id: "route-line",
     type: "line",
     source: "route",
@@ -80,7 +79,7 @@ export function RouteLayer({ places, routeColor = "#00f0ff" }: RouteLayerProps) 
     }
   }
 
-  const glowStyle: LineLayer = {
+  const glowStyle: any = {
     id: "route-glow",
     type: "line",
     source: "route",

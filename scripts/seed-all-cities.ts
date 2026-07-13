@@ -5,6 +5,7 @@ import { cityPlacesSchema } from "../lib/places-schema"
 import { cities } from "../lib/data/cities"
 import * as fs from 'fs'
 import * as path from 'path'
+import { fetchPlaceImage } from '../lib/image-pipeline'
 
 // Manually parse .env.local since dotenv is not installed
 const envPath = path.resolve(process.cwd(), '.env.local')
@@ -77,45 +78,48 @@ Ensure the output conforms exactly to the schema.`,
 
     console.log(`Generated ${object.places.length} places for ${city.name}. Upserting to Supabase...`)
 
-    const insertData = object.places.map((p) => ({
-      id: p.id,
-      country: p.country,
-      state: p.state,
-      city: city.id,
-      locality: p.locality || null,
-      
-      name: p.name,
-      category: p.category,
-      vibes: p.vibes || [],
-      
-      latitude: p.latitude,
-      longitude: p.longitude,
-      
-      images: [`https://source.unsplash.com/800x600/?${encodeURIComponent(p.imageQuery + " " + city.name)}`],
-      short_description: p.shortDescription,
-      long_description: p.longDescription,
-      
-      average_visit_time: p.averageVisitTime || null,
-      best_season: p.bestSeason || null,
-      best_time: p.bestTime || null,
-      entry_fee: p.entryFee || null,
-      
-      rating: p.rating || null,
-      crowd_level: p.crowdLevel || null,
-      photography_score: p.photographyScore || null,
-      accessibility: p.accessibility || null,
-      
-      tags: p.tags || [],
-      nearby_places: p.nearbyPlaces || [],
-      
-      google_place_id: p.googlePlaceId || null,
-      opening_hours: p.openingHours || null,
-      travel_tips: p.travelTips || [],
-      famous_for: p.famousFor || null,
-      
-      emotion_scores: p.emotionScores || {},
-      hidden_gem_score: p.hiddenGemScore || 0.0,
-      popularity_score: p.popularityScore || null,
+    const insertData = await Promise.all(object.places.map(async (p) => {
+      const imageUrl = await fetchPlaceImage(p.name, city.name);
+      return {
+        id: p.id,
+        country: p.country,
+        state: p.state,
+        city: city.id,
+        locality: p.locality || null,
+        
+        name: p.name,
+        category: p.category,
+        vibes: p.vibes || [],
+        
+        latitude: p.latitude,
+        longitude: p.longitude,
+        
+        images: imageUrl ? [imageUrl] : [],
+        short_description: p.shortDescription,
+        long_description: p.longDescription,
+        
+        average_visit_time: p.averageVisitTime || null,
+        best_season: p.bestSeason || null,
+        best_time: p.bestTime || null,
+        entry_fee: p.entryFee || null,
+        
+        rating: p.rating || null,
+        crowd_level: p.crowdLevel || null,
+        photography_score: p.photographyScore || null,
+        accessibility: p.accessibility || null,
+        
+        tags: p.tags || [],
+        nearby_places: p.nearbyPlaces || [],
+        
+        google_place_id: p.googlePlaceId || null,
+        opening_hours: p.openingHours || null,
+        travel_tips: p.travelTips || [],
+        famous_for: p.famousFor || null,
+        
+        emotion_scores: p.emotionScores || {},
+        hidden_gem_score: p.hiddenGemScore || 0.0,
+        popularity_score: p.popularityScore || null,
+      };
     }))
 
     const { error } = await supabase

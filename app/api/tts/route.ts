@@ -1,58 +1,50 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server'
+import { headers } from 'next/headers'
 
 export async function POST(req: Request) {
   try {
-    const { text } = await req.json();
+    const { text } = await req.json()
 
     if (!text) {
-      return NextResponse.json({ error: 'Text is required' }, { status: 400 });
+      return NextResponse.json({ error: 'Text is required' }, { status: 400 })
     }
 
-    const elevenLabsApiKey = process.env.ELEVENLABS_API_KEY;
-
-    if (!elevenLabsApiKey) {
-      // Fallback: If no API key is provided, we can return a 501 Not Implemented
-      // The frontend can fallback to the browser's native SpeechSynthesis API
-      return NextResponse.json({ error: 'ElevenLabs API key is not configured' }, { status: 501 });
+    const openaiApiKey = process.env.OPENAI_API_KEY
+    if (!openaiApiKey) {
+      // Return 501 to trigger the client-side native TTS fallback
+      return new NextResponse(null, { status: 501 })
     }
 
-    // Default voice ID for a good narrator (e.g., Adam or similar)
-    const voiceId = 'pNInz6obpgDQGcFmaJgB'; 
-    const url = `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream`;
-
-    const response = await fetch(url, {
+    const response = await fetch('https://api.openai.com/v1/audio/speech', {
       method: 'POST',
       headers: {
-        'Accept': 'audio/mpeg',
+        'Authorization': `Bearer ${openaiApiKey}`,
         'Content-Type': 'application/json',
-        'xi-api-key': elevenLabsApiKey,
       },
       body: JSON.stringify({
-        text,
-        model_id: 'eleven_monolingual_v1',
-        voice_settings: {
-          stability: 0.5,
-          similarity_boost: 0.5,
-        }
+        model: 'tts-1',
+        input: text,
+        voice: 'alloy', // options: alloy, echo, fable, onyx, nova, shimmer
+        response_format: 'mp3',
       }),
-    });
+    })
 
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('ElevenLabs Error:', errorText);
-      return NextResponse.json({ error: 'Failed to generate speech' }, { status: response.status });
+      const errorText = await response.text()
+      console.error('OpenAI TTS Error:', errorText)
+      return NextResponse.json({ error: 'Failed to generate speech' }, { status: response.status })
     }
 
-    // Return the audio stream
-    return new NextResponse(response.body, {
+    const audioBuffer = await response.arrayBuffer()
+
+    return new NextResponse(audioBuffer, {
       headers: {
         'Content-Type': 'audio/mpeg',
-        'Transfer-Encoding': 'chunked'
-      }
-    });
-
+        'Cache-Control': 'public, max-age=31536000, immutable',
+      },
+    })
   } catch (error) {
-    console.error('TTS API Error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error('TTS API Route Error:', error)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

@@ -5,7 +5,7 @@ import { llmRateLimiter, standardRateLimiter } from '@/utils/rate-limit'
 export async function updateSession(request: NextRequest) {
   // 1. Rate Limiting for API routes
   if (request.nextUrl.pathname.startsWith('/api/')) {
-    const ip = request.ip ?? request.headers.get('x-forwarded-for') ?? '127.0.0.1'
+    const ip = request.headers.get('x-forwarded-for') ?? '127.0.0.1'
     const isLlmRoute = request.nextUrl.pathname.startsWith('/api/chat') || 
                        request.nextUrl.pathname.startsWith('/api/generate-places') || 
                        request.nextUrl.pathname.startsWith('/api/admin/ingest-places')
@@ -87,8 +87,12 @@ export async function updateSession(request: NextRequest) {
     }
   }
 
-  // Protect /my-trips route
-  if (!user && request.nextUrl.pathname.startsWith('/my-trips')) {
+  // Protect /my-trips, /plan, and /explore routes
+  if (!user && (
+    request.nextUrl.pathname.startsWith('/my-trips') ||
+    request.nextUrl.pathname.startsWith('/plan') ||
+    request.nextUrl.pathname.startsWith('/explore')
+  )) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)

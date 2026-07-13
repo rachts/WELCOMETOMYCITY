@@ -1,8 +1,9 @@
 "use client"
 
 import { useChat } from '@ai-sdk/react'
+import { DefaultChatTransport } from 'ai'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { MessageSquare, X, Send, Bot, User } from 'lucide-react'
 import { GlassCard } from './ui/glass-card'
 import { Button } from './ui/button'
@@ -16,13 +17,31 @@ interface AIGuideProps {
 export function AIGuide({ cityContext, userLocation, themeClass = "text-primary" }: AIGuideProps) {
   const [isOpen, setIsOpen] = useState(false)
   
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
+  const transport = useMemo(() => new DefaultChatTransport({
     api: '/api/chat',
     body: {
       cityContext,
       userLocation
     }
+  }), [cityContext, userLocation])
+
+  const [input, setInput] = useState('')
+  const { messages, sendMessage, status } = useChat({
+    transport
   })
+
+  const isLoading = status === 'streaming' || status === 'submitted'
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(e.target.value)
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!input.trim()) return
+    sendMessage({ text: input })
+    setInput('')
+  }
 
   return (
     <>
@@ -77,7 +96,7 @@ export function AIGuide({ cityContext, userLocation, themeClass = "text-primary"
                           ? 'bg-primary text-black rounded-tr-none' 
                           : 'bg-white/10 border border-white/5 rounded-tl-none whitespace-pre-wrap'
                       }`}>
-                        {m.content}
+                        {m.parts?.map(p => p.type === 'text' ? p.text : '').join('') || ''}
                       </div>
                     </div>
                   ))

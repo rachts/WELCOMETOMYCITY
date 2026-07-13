@@ -19,7 +19,7 @@ export interface BusMatch {
   estimatedFare: number
 }
 
-const buses: BusRoute[] = busesData.routes
+const buses: BusRoute[] = busesData.routes as BusRoute[]
 
 // Normalize stop names for matching
 function normalizeStop(stop: string): string {

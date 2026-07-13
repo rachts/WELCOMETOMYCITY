@@ -15,7 +15,7 @@ function optimizeRoute(selectedPlaces: Place[]): Place[] {
     let nearestDist = Number.POSITIVE_INFINITY
 
     remaining.forEach((place, idx) => {
-      const dist = calculateDistance(last.lat, last.lng, place.lat, place.lng)
+      const dist = calculateDistance(last.latitude, last.longitude, place.latitude, place.longitude)
       if (dist < nearestDist) {
         nearestDist = dist
         nearestIdx = idx
@@ -33,10 +33,10 @@ function calculateTotalDistance(orderedPlaces: Place[]): number {
   let total = 0
   for (let i = 0; i < orderedPlaces.length - 1; i++) {
     total += calculateDistance(
-      orderedPlaces[i].lat,
-      orderedPlaces[i].lng,
-      orderedPlaces[i + 1].lat,
-      orderedPlaces[i + 1].lng,
+      orderedPlaces[i].latitude,
+      orderedPlaces[i].longitude,
+      orderedPlaces[i + 1].latitude,
+      orderedPlaces[i + 1].longitude,
     )
   }
   return Math.round(total * 10) / 10
@@ -93,7 +93,7 @@ export function generateItinerary(
     // Slice the top matching places for this day
     const startIndex = i * placesPerDay
     // If we run out of places, just loop back or stop. For now, just slice what we have.
-    const dayPlacesUnoptimized = scoredPlaces.slice(startIndex, startIndex + placesPerDay)
+    const dayPlacesUnoptimized = filteredPlaces.slice(startIndex, startIndex + placesPerDay)
     
     if (dayPlacesUnoptimized.length === 0) break
 

@@ -81,7 +81,7 @@ Do not just give generic tourist advice; sound like a passionate local who knows
       messages,
     })
 
-    return result.toDataStreamResponse()
+    return result.toTextStreamResponse()
   } catch (error: any) {
     console.error('Error in AI Chat route:', error)
     return new Response(JSON.stringify({ error: 'Internal Server Error' }), {

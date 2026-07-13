@@ -51,7 +51,7 @@ export function getPlacesForMode(places: Place[], mode: ExperienceMode | "all"):
   return scoredPlaces.map(sp => sp.place)
 }
 
-export function getModeColor(mode: ExperienceMode | "all"): string {
+export function getModeColor(mode: ExperienceMode | "all"): "primary" | "rose" | "indigo" | "amber" | "orange" {
   switch (mode) {
     case "romantic": return "rose"
     case "hidden-gems": return "indigo"

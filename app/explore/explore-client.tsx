@@ -19,6 +19,7 @@ import { getWeather } from "@/lib/api/weather"
 import { AudioStoryteller } from "@/components/audio-storyteller"
 import { AIGuide } from "@/components/ai-guide"
 import { VibeTags } from "@/components/vibe-tags"
+import { PlaceImage } from "@/components/ui/place-image"
 
 // Dynamically import map to avoid SSR issues with MapLibre
 const CityMap = dynamic(() => import('@/components/map/city-map').then(mod => mod.CityMap), { 
@@ -198,9 +199,9 @@ export function ExploreClient({ initialPlaces }: { initialPlaces: Place[] }) {
                       <p className="text-sm text-white/70">{selectedCollection.description}</p>
                     </div>
                     <div className="flex flex-col gap-3 pb-8">
-                      {feedPlaces.map((place) => (
+                      {feedPlaces.map((place, index) => (
                         <motion.div 
-                          key={place.id}
+                          key={`${place.id}-${index}`}
                           layoutId={`card-${place.id}`}
                           whileHover={{ scale: 1.02 }}
                           onClick={() => setSelectedPlace(place)}
@@ -210,8 +211,7 @@ export function ExploreClient({ initialPlaces }: { initialPlaces: Place[] }) {
                         >
                           <div className="flex gap-3 h-20">
                             <div className="w-20 shrink-0 rounded-lg overflow-hidden bg-black/50">
-                              {/* eslint-disable-next-line @next/next/no-img-element */}
-                              <img src={place.images?.[0]} alt={place.name} className="w-full h-full object-cover" />
+                              <PlaceImage src={place.images?.[0]} alt={place.name} category={place.category} className="w-full h-full object-cover" />
                             </div>
                             <div className="flex flex-col justify-between py-1 overflow-hidden">
                               <div>
@@ -246,8 +246,7 @@ export function ExploreClient({ initialPlaces }: { initialPlaces: Place[] }) {
                     >
                       <div className="flex gap-3 h-20">
                         <div className="w-20 shrink-0 rounded-lg overflow-hidden bg-black/50">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={place.images?.[0]} alt={place.name} className="w-full h-full object-cover" />
+                          <PlaceImage src={place.images?.[0]} alt={place.name} category={place.category} className="w-full h-full object-cover" />
                         </div>
                         <div className="flex flex-col justify-between py-1 overflow-hidden">
                           <div>
@@ -307,10 +306,9 @@ export function ExploreClient({ initialPlaces }: { initialPlaces: Place[] }) {
                       </Button>
                     </div>
                   </div>
-                  <div className="h-40 w-full rounded-xl overflow-hidden mb-4 relative shadow-inner">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={selectedPlace.images?.[0]} alt={selectedPlace.name} className="object-cover w-full h-full" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="h-40 w-full rounded-xl overflow-hidden mb-4 relative shadow-inner bg-black/50">
+                    <PlaceImage src={selectedPlace.images?.[0]} alt={selectedPlace.name} category={selectedPlace.category} className="object-cover w-full h-full" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
                     <div className="absolute bottom-3 left-3 right-3 flex justify-between items-end">
                       <span className="text-xs font-medium px-2 py-1 bg-black/60 backdrop-blur-md rounded-md border border-white/10">
                         {selectedPlace.bestTime}

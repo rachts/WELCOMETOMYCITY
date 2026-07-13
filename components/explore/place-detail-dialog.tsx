@@ -1,7 +1,7 @@
 "use client"
 
-import Image from "next/image"
 import Link from "next/link"
+import { PlaceImage } from "@/components/ui/place-image"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -34,7 +34,7 @@ interface PlaceDetailDialogProps {
 export function PlaceDetailDialog({ place, open, onOpenChange }: PlaceDetailDialogProps) {
   if (!place) return null
 
-  const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${place.lat},${place.lng}`
+  const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${place.latitude},${place.longitude}`
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -42,23 +42,20 @@ export function PlaceDetailDialog({ place, open, onOpenChange }: PlaceDetailDial
         <DialogHeader>
           <div className="flex items-start gap-3">
             <DialogTitle className="text-2xl">{place.name}</DialogTitle>
-            <Badge className={categoryColors[place.category]}>{categoryLabels[place.category]}</Badge>
+            <Badge className={categoryColors[place.category] || categoryColors['historical']}>{categoryLabels[place.category] || place.category}</Badge>
           </div>
         </DialogHeader>
 
-        <div className="relative h-64 overflow-hidden rounded-lg">
-          <Image
-            src={
-              place.image ||
-              `/placeholder.svg?height=400&width=600&query=${encodeURIComponent(place.name + " Kolkata landmark")}`
-            }
+        <div className="relative h-64 overflow-hidden rounded-lg bg-black/50">
+          <PlaceImage
+            src={place.images?.[0] || ""}
             alt={place.name}
-            fill
-            className="object-cover"
+            category={place.category}
+            className="w-full h-full object-cover"
           />
         </div>
 
-        <p className="text-muted-foreground">{place.description}</p>
+        <p className="text-muted-foreground">{place.shortDescription || ""}</p>
 
         <Separator />
 
@@ -84,7 +81,7 @@ export function PlaceDetailDialog({ place, open, onOpenChange }: PlaceDetailDial
               <Train className="h-5 w-5 text-primary mt-0.5" />
               <div>
                 <p className="font-medium">Nearest Metro</p>
-                <p className="text-sm text-muted-foreground">{place.nearbyStation} Station</p>
+                <p className="text-sm text-muted-foreground">{place.locality ? `In ${place.locality}` : 'Mumbai'}</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
@@ -92,7 +89,7 @@ export function PlaceDetailDialog({ place, open, onOpenChange }: PlaceDetailDial
               <div>
                 <p className="font-medium">Location</p>
                 <p className="text-sm text-muted-foreground">
-                  {place.lat.toFixed(4)}, {place.lng.toFixed(4)}
+                  {place.latitude?.toFixed(4) || "0.0000"}, {place.longitude?.toFixed(4) || "0.0000"}
                 </p>
               </div>
             </div>

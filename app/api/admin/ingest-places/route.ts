@@ -5,6 +5,7 @@ import { createClient } from '@supabase/supabase-js'
 import { cityPlacesSchema } from '@/lib/places-schema'
 import { z } from 'zod'
 import { createClient as createServerClient } from '@/utils/supabase/server'
+import { fetchPlaceImage } from '@/lib/image-pipeline'
 
 const ingestSchema = z.object({
   city_id: z.string().min(1, "city_id is required"),
@@ -59,20 +60,23 @@ export async function POST(req: Request) {
     )
 
     // Map AI output to database schema
-    const insertData = object.places.map((place) => ({
-      id: place.id,
-      city_id: city_id,
-      name: place.name,
-      category: place.category,
-      lat: place.lat,
-      lng: place.lng,
-      image: `/placeholder.svg?height=300&width=400&query=${encodeURIComponent(place.imageQuery + " " + city_id)}`,
-      description: place.description,
-      story: place.story,
-      emotion_scores: place.emotion_scores,
-      hidden_gem_score: place.hidden_gem_score,
-      best_time: place.bestTime,
-      crowd_level: place.crowd_level,
+    const insertData = await Promise.all(object.places.map(async (place) => {
+      const imageUrl = await fetchPlaceImage(place.name, city_id);
+      return {
+        id: place.id,
+        city_id: city_id,
+        name: place.name,
+        category: place.category,
+        latitude: place.latitude,
+        longitude: place.longitude,
+        shortDescription: place.shortDescription,
+        longDescription: place.longDescription,
+        emotionScores: place.emotionScores,
+        hiddenGemScore: place.hiddenGemScore,
+        bestTime: place.bestTime,
+        images: imageUrl ? [imageUrl] : [],
+        crowdLevel: place.crowdLevel,
+      };
     }))
 
     const { data, error } = await supabase

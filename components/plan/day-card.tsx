@@ -99,7 +99,7 @@ export function DayCard({ itinerary, modeColor = "primary" }: DayCardProps) {
                   </div>
                   
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    {place.story || place.description}
+                    {place.shortDescription || ""}
                   </p>
                   
                   <div className="flex flex-wrap items-center gap-4 pt-2 text-xs font-medium">
@@ -109,7 +109,7 @@ export function DayCard({ itinerary, modeColor = "primary" }: DayCardProps) {
                     </div>
                     <div className="flex items-center gap-1.5 px-2 py-1 bg-background rounded-md border">
                       <MapPin className={`h-3.5 w-3.5 ${iconColorClasses.split(' ')[0]}`} />
-                      Near {place.nearbyStation}
+                      {place.locality ? `In ${place.locality}` : 'Mumbai'}
                     </div>
                   </div>
                 </div>
@@ -117,7 +117,7 @@ export function DayCard({ itinerary, modeColor = "primary" }: DayCardProps) {
                 <div className="w-full md:w-48 h-32 md:h-auto shrink-0 rounded-lg overflow-hidden border shadow-sm">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={place.image}
+                    src={place.images?.[0] || ""}
                     alt={place.name}
                     className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
                   />

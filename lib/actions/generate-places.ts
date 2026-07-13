@@ -5,6 +5,7 @@ import { cityPlacesSchema } from "@/lib/places-schema"
 import { getCityById } from "@/lib/data/cities"
 import type { Place } from "@/lib/types"
 import { z } from "zod"
+import { fetchPlaceImage } from "@/lib/image-pipeline"
 
 const cityIdSchema = z.string().min(1, "Invalid city ID")
 
@@ -50,10 +51,20 @@ Make the descriptions engaging and informative for tourists.`,
     })
 
     // Transform the places to include proper image URLs
-    const placesWithImages: Place[] = object.places.map((place) => ({
-      ...place,
-      image: `/placeholder.svg?height=300&width=400&query=${encodeURIComponent(place.imageQuery + " " + city.name + " India landmark")}`,
-    }))
+    const placesWithImages: Place[] = await Promise.all(
+      object.places.map(async (place) => {
+        // Remove imageQuery from the final Place object
+        const { imageQuery, ...rest } = place;
+        
+        // Fetch actual image URL (Google -> Wikipedia -> Unsplash)
+        const imageUrl = await fetchPlaceImage(place.name, city.name);
+
+        return {
+          ...rest,
+          images: imageUrl ? [imageUrl] : [],
+        };
+      })
+    )
 
     return { places: placesWithImages }
   } catch (error) {

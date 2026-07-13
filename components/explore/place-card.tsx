@@ -1,7 +1,7 @@
 "use client"
 
-import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
+import { PlaceImage } from "@/components/ui/place-image"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Clock, Ticket, Train, MapPin } from "lucide-react"
@@ -31,23 +31,20 @@ interface PlaceCardProps {
 export function PlaceCard({ place, onViewDetails }: PlaceCardProps) {
   return (
     <Card className="group overflow-hidden border-border/50 transition-all hover:border-primary/50 hover:shadow-lg">
-      <div className="relative h-48 overflow-hidden">
-        <Image
-          src={
-            place.image ||
-            `/placeholder.svg?height=300&width=400&query=${encodeURIComponent(place.name + " Kolkata landmark")}`
-          }
+      <div className="relative h-48 overflow-hidden bg-black/50">
+        <PlaceImage
+          src={place.images?.[0] || ""}
           alt={place.name}
-          fill
-          className="object-cover transition-transform group-hover:scale-105"
+          category={place.category}
+          className="w-full h-full object-cover transition-transform group-hover:scale-105"
         />
-        <Badge className={`absolute left-3 top-3 ${categoryColors[place.category]}`}>
-          {categoryLabels[place.category]}
+        <Badge className={`absolute left-3 top-3 ${categoryColors[place.category] || categoryColors['historical']}`}>
+          {categoryLabels[place.category] || place.category}
         </Badge>
       </div>
       <CardContent className="p-4">
         <h3 className="font-semibold text-lg">{place.name}</h3>
-        <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{place.description}</p>
+        <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{place.shortDescription || ""}</p>
 
         <div className="mt-4 space-y-2">
           <div className="flex items-center gap-2 text-sm">
@@ -60,7 +57,7 @@ export function PlaceCard({ place, onViewDetails }: PlaceCardProps) {
           </div>
           <div className="flex items-center gap-2 text-sm">
             <Train className="h-4 w-4 text-primary" />
-            <span className="text-muted-foreground">Near {place.nearbyStation}</span>
+            <span className="text-muted-foreground">{place.locality ? `In ${place.locality}` : 'Mumbai'}</span>
           </div>
         </div>
 

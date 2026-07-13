@@ -2,7 +2,7 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 export interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  glowColor?: "primary" | "secondary" | "accent" | "rose" | "indigo" | "none"
+  glowColor?: "primary" | "secondary" | "accent" | "rose" | "indigo" | "amber" | "orange" | "none"
 }
 
 const GlassCard = React.forwardRef<HTMLDivElement, GlassCardProps>(
@@ -14,6 +14,8 @@ const GlassCard = React.forwardRef<HTMLDivElement, GlassCardProps>(
       accent: "hover:shadow-[0_0_20px_-5px_rgba(217,70,239,0.4)] hover:border-accent/50",
       rose: "hover:shadow-[0_0_20px_-5px_rgba(244,63,94,0.4)] hover:border-rose-400/50",
       indigo: "hover:shadow-[0_0_20px_-5px_rgba(99,102,241,0.4)] hover:border-indigo-400/50",
+      amber: "hover:shadow-[0_0_20px_-5px_rgba(251,191,36,0.4)] hover:border-amber-400/50",
+      orange: "hover:shadow-[0_0_20px_-5px_rgba(249,115,22,0.4)] hover:border-orange-400/50",
       none: "hover:border-white/20"
     }
 

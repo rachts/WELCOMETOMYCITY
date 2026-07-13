@@ -3,6 +3,7 @@ import { google } from "@ai-sdk/google"
 import { cityPlacesSchema } from "@/lib/places-schema"
 import { getCityById } from "@/lib/data/cities"
 import { z } from "zod"
+import { fetchPlaceImage } from "@/lib/image-pipeline"
 
 const requestSchema = z.object({
   cityId: z.string().min(1, "cityId is required")
@@ -58,9 +59,12 @@ Ensure the output conforms exactly to the schema.`,
     })
 
     // Transform the places to include proper image URLs as an array
-    const placesWithImages = object.places.map((place) => ({
-      ...place,
-      images: [`/placeholder.svg?height=300&width=400&query=${encodeURIComponent(place.imageQuery + " " + city.name)}`],
+    const placesWithImages = await Promise.all(object.places.map(async (place) => {
+      const imageUrl = await fetchPlaceImage(place.name, city.name);
+      return {
+        ...place,
+        images: imageUrl ? [imageUrl] : [],
+      };
     }))
 
     return Response.json({ places: placesWithImages, city: city.name })
